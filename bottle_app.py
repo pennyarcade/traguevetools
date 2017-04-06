@@ -1,48 +1,44 @@
-'''
+"""
     @TODO: Application Apidoc
-'''
+"""
 
-'''
-    Imports section
-    @TODO document sources
-'''
 from bottle import default_app, route, run, debug
 import requests
 import traceback
 import pprint
 import local_settings
 
-'''
+"""
     Globals Section
     
     Put global definitions here for now. Likely to move to a config module soon.
-'''
+"""
+jitaStationId = '60003466'
+forgeRegionId = '10000002'
 
-
-
-'''
+"""
     Bottle Setup Section
 
     Setup Bottle framework
-'''
+"""
 # Bottle debug mode
 debug(True)
 # automatically reload app if files changed
 # run(reloader=True)
 
 
-'''
+"""
     demo page
-'''
+"""
 @route('/')
 def hello_world():
     return 'Hello from Bottle!'
 
-'''
+"""
     get ore prices from jita and return as  
-'''
+"""
 @route('/csv/jitaores')
-def hello_world():
+def csv_jitaores():
     output = ''
     output += 'csv / jita ores' + "\n\n"
 
@@ -54,12 +50,13 @@ def hello_world():
 
     # get all orders from Forge region
     response = requests.get(url, headers=headers)
+    data = response.json()
 
-    output += pprint.pformat(response.text, indent=4)
+    for item in data.items:
+        output += pprint.pformat(item, indent=4)
 
     return output
 
 
 # run Application
 application = default_app()
-
