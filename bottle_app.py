@@ -6,7 +6,7 @@
     Imports section
     @TODO document sources
 '''
-from bottle import default_app, route, run
+from bottle import default_app, route, run, debug
 import requests
 import traceback
 import pprint
@@ -26,7 +26,7 @@ import local_settings
     Setup Bottle framework
 '''
 # Bottle debug mode
-bottle.debug(True)
+debug(True)
 # automatically reload app if files changed
 # run(reloader=True)
 
