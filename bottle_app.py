@@ -44,14 +44,18 @@ def hello_world():
 @route('/csv/jitaores')
 def hello_world():
     output = ''
-    output += 'csv / jita ores'
+    output += 'csv / jita ores' + "\n\n"
 
     headers = {
         # Eve Api Token is secret, sorry
         'Authorisation': local_settings.ApiToken
     }
+    url = 'https://crest-tq.eveonline.com/market/10000002/orders/all/'
 
-    response = requests.get()
+    # get all orders from Forge region
+    response = requests.get(url, headers=headers)
+
+    output += pprint.pformat(response.text, indent=4)
 
     return output
 
