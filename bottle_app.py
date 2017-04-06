@@ -40,7 +40,7 @@ def hello_world():
 @route('/csv/jitaores')
 def csv_jitaores():
     output = ''
-    output += 'csv / jita ores' + "\n\n"
+    output += 'csv / jita ores' + "<br>"
 
     headers = {
         # Eve Api Token is secret, sorry
@@ -53,7 +53,7 @@ def csv_jitaores():
     data = response.json()
 
     for item in data.items:
-        output += pprint.pformat(item, indent=4)
+        output += '<p>' + pprint.pformat(item, indent=4) + '</p>'
 
     return output
 
