@@ -48,7 +48,12 @@ def index():
     raw_data = request.forms.get('textAreaContract')
     for line in StringIO.StringIO(str(raw_data)):
         parts = line.split("\t")
-        item_list.append((parts[0], int(parts[1])))
+        try:
+            amount = int(parts[1])
+        except ValueError:
+            amount = None
+
+        item_list.append((parts[0], amount))
 
     output += pprint.pformat(item_list)
 
