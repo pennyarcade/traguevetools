@@ -42,21 +42,23 @@ def index():
 @view('contractparser.html')
 def index():
     output = ''
-    itemList = []
+    item_list = []
 
-    rawdata = request.forms.get('textAreaContract')
-    for line in rawdata:
+    raw_data = request.forms.get('textAreaContract')
+    for line in str(raw_data):
         parts = line.split("\t")
-        itemList[] = (parts[0], parts[1])
+        item_list.append((parts[0], parts[1]))
 
-    output += pprint.pformat(itemList)
+    output += pprint.pformat(item_list)
 
     return dict(
+        # result for display
         result=None,
+        # form data to preset form for debugging
+        inputData=raw_data,
+        # debug output
         output=output
     )
-
-
 
 
 """
@@ -71,11 +73,11 @@ def csv_jitaores():
         # Eve Api Token is secret, sorry
         'Authorisation': local_settings.ApiToken
     }
-    url = 'https://crest-tq.eveonline.com/market/10000002/orders/all/'
+    endpoint_url = 'https://crest-tq.eveonline.com/market/10000002/orders/all/'
 
     # get all orders from Forge region
-    response = requests.get(url, headers=headers)
-    data = response.json()
+    api_response = requests.get(endpoint_url, headers=headers)
+    data = api_response.json()
 
     for item in data['items']:
         output += '<p>' + pprint.pformat(item, indent=4) + '</p>'
