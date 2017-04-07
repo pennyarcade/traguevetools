@@ -31,8 +31,11 @@ debug(True)
     demo page
 """
 @route('/')
-def hello_world():
-    return 'Hello from Bottle!'
+@view('contractparser.html')
+def index():
+    return dict(
+        result=None
+    )
 
 """
     get ore prices from jita and return as  
@@ -52,7 +55,7 @@ def csv_jitaores():
     response = requests.get(url, headers=headers)
     data = response.json()
 
-    for item in data.items:
+    for item in data['items']:
         output += '<p>' + pprint.pformat(item, indent=4) + '</p>'
 
     return output
