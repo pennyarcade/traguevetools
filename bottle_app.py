@@ -68,14 +68,6 @@ def index():
 
 
 """
-    serve jquery files
-"""
-@route('/jquery/<filename:path>', name='jquery')
-def send_static(filename):
-    return static_file(filename, root='jquery')
-
-
-"""
     get ore prices from jita and return as csv  
 """
 @route('/csv/jitaores')

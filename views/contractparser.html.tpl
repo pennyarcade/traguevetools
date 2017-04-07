@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Contract Parser</title>
-	<link href="jquery/jquery-ui.css" rel="stylesheet">
+	<link href="/static/jquery/jquery-ui.css" rel="stylesheet">
 	<style>
         body{
             font-family: "Trebuchet MS", sans-serif;
