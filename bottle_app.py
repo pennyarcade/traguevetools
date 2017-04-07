@@ -41,7 +41,15 @@ def index():
 @route('/', method='POST')
 @view('contractparser.html')
 def index():
-    output = request.forms.get('textAreaContract')
+    output = ''
+    itemList = []
+
+    rawdata = request.forms.get('textAreaContract')
+    for line in rawdata:
+        parts = line.split("\t")
+        itemList[] = (parts[0], parts[1])
+
+    output += pprint.pformat(itemList)
 
     return dict(
         result=None,
