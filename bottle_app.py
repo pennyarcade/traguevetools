@@ -28,7 +28,7 @@ debug(True)
 
 
 """
-    demo page
+    contract parser
 """
 @route('/')
 @view('contractparser.html')
@@ -36,6 +36,20 @@ def index():
     return dict(
         result=None
     )
+
+
+@route('/', method='POST')
+@view('contractparser.html')
+def index():
+    output = request.forms.get('textAreaContract')
+
+    return dict(
+        result=None,
+        output=output
+    )
+
+
+
 
 """
     get ore prices from jita and return as  

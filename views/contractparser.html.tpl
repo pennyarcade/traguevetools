@@ -20,7 +20,7 @@
             <textarea cols="80" rows="20" name="textAreaContract" id="textAreaContract">
                 Copy contract items here
             </textarea><br/>
-            <button id="reset" type="reset">Reset</button><br/>
+            <button id="reset" type="reset">Reset</button>
             <button id="submit" type="submit">Calculate</button><br/>
         </fieldset>
     </form>
@@ -49,6 +49,16 @@
             % end
         </tbody>
     </table>
+    % end
+    % if output:
+    <hr/>
+    <div class="ui-widget">
+	    <div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 .7em;">
+		    <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span><br/>
+                <pre>{{output}}</pre>
+		    </p>
+	    </div>
+    </div>
     % end
 </body>
 </html>
