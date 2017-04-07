@@ -22,7 +22,7 @@
         </center>
     </form>
 
-    % if result is not none:
+    % if result is not None:
     <hr/>
     <table>
         <thead>
