@@ -2,7 +2,7 @@
     @TODO: Application Apidoc
 """
 
-from bottle import default_app, route, run, debug, template
+from bottle import *
 import requests
 import traceback
 import pprint
