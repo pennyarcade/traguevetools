@@ -35,7 +35,12 @@ debug(True)
 @view('contractparser.html')
 def index():
     return dict(
-        result=None
+        # result for display
+        result=None,
+        # form data to preset form for debugging
+        inputdata='',
+        # debug output
+        output=None
     )
 
 
