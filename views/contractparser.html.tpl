@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            % for line in result
+            % for line in result:
                 <tr>
                     <td>{{line['itemName']}}</td>
                     <td>{{line['itemId']}}</td>
