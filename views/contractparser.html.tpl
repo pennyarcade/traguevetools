@@ -17,9 +17,7 @@
     <form method="post" id="contractData">
         <fieldset>
         	<legend>Contract Items</legend>
-            <textarea cols="80" rows="20" name="textAreaContract" id="textAreaContract">
-                Copy contract items here
-            </textarea><br/>
+            <textarea cols="80" rows="20" name="textAreaContract" id="textAreaContract">{{input_data}}</textarea><br/>
             <button id="reset" type="reset">Reset</button>
             <button id="submit" type="submit">Calculate</button><br/>
         </fieldset>

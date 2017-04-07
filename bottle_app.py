@@ -56,7 +56,7 @@ def index():
         # result for display
         result=None,
         # form data to preset form for debugging
-        inputData=raw_data,
+        input_data=raw_data,
         # debug output
         output=output
     )
