@@ -70,9 +70,9 @@ def index():
 """
     serve jquery files
 """
-@route('/jquery/<filename:path>')
+@route('/jquery/<filename:path>' name='jquery')
 def send_static(filename):
-    return static_file(filename, root='./jquery')
+    return static_file(filename, root='jquery')
 
 
 """
