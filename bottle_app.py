@@ -7,6 +7,7 @@ import requests
 import traceback
 import pprint
 import local_settings
+import StringIO
 
 """
     Globals Section
@@ -45,7 +46,7 @@ def index():
     item_list = []
 
     raw_data = request.forms.get('textAreaContract')
-    for line in str(raw_data):
+    for line in StringIO.StringIO(str(raw_data)):
         parts = line.split("\t")
         item_list.append((parts[0], parts[1]))
 
