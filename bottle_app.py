@@ -33,6 +33,7 @@ mysql_plugin = bottle_mysql.Plugin(
     dbname=local_settings.MySqlName,
     dbhost=local_settings.MySqlHost
 )
+install(mysql_plugin)
 
 
 """
@@ -143,4 +144,3 @@ def csv_jitaores():
 
 # run application
 application = default_app()
-# application.install(mysql_plugin)
