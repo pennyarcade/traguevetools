@@ -78,12 +78,10 @@ def index(db=None):
 
             # build list entry
             item_list.append([parts[0], item_id, amount, row])
-        except Exception:
+        except IndexError:
             output += ''.join(
                 traceback.format_exc()
             )
-            # Todo: error handling
-            raise
 
     # Todo: Sort and stack items
 
