@@ -79,26 +79,25 @@ def index():
             #stack items to remove duplicates
             found = False
             for index, line in enumerate(item_list):
-                if line[0] == parts[0].strip():
-                    line[1] += amount
+                if line['typeName'] == parts[0].strip():
+                    line['amount'] += amount
                     found = True
                     item_list[index] = line
 
             # add new item only if it is not in the list yet
             if not found:
                 # get item ID from DB
-                item = Model.get_dictionary_from_model(
-                    Model.InvType.get(
-                        Model.InvType.typeName == parts[0].strip()
-                    )
+                item = Model.InvType.get(
+                    Model.InvType.typeName == parts[0].strip()
                 )
 
                 # build list entry
-                item_list.append([
-                    parts[0],
-                    amount,
-                    item
-                ])
+                item_list.append({
+                    'typeName': parts[0].strip(),
+                    'amount': amount,
+                    'typeID': item.typeID,
+                    'description': item.description
+                })
 
         except IndexError:
             # dump parsing errors to debug output
@@ -106,13 +105,35 @@ def index():
                 traceback.format_exc()
             )
 
-    # Todo: get all Jita offers
+    # get all Jita offers
+    headers = {
+        # Eve Api Token is secret, sorry
+        'Authorisation': local_settings.ApiToken
+    }
+    endpoint_url = 'https://crest-tq.eveonline.com/market/10000002/orders/all/'
+
+    # get all orders from Forge region
+    api_response = requests.get(endpoint_url, headers=headers)
+    data = api_response.json()
 
     # Todo: Filter highest bids
+    for index, item in enumerate(item_list):
+        buy_prices = list()
+        sell_prices = list()
+        for line in data:
+            if item['typeId'] == line['type'] and line['stationID'] == jitaStationId:
+                if line['buy']:
+                    buy_prices.append(line['price'])
+                else:
+                    sell_prices.append(line['price'])
 
-    # Todo: cache highest bids 15 mins
+        # enrich item list with price data
+        item['max_buy_price'] = max(buy_prices)
+        item['min_buy_price'] = min(buy_prices)
+        item['max_sell_price'] = max(sell_prices)
+        item['min_sell_price'] = min(sell_prices)
+        item_list[index] = item
 
-    # Todo: enrich item list with price data
 
     output += pprint.pformat(item_list)
 
@@ -127,10 +148,10 @@ def index():
         output=output
     )
 
-"""
-    parse string to integer in a consistent way
-"""
 def parseint(string):
+    """
+        parse string to integer in a consistent way
+    """
     try:
         amount = int(string)
     except ValueError:
