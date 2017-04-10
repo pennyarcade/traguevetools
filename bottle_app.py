@@ -3,6 +3,7 @@
 """
 
 from bottle import *
+import bottle_mysql
 import requests
 import traceback
 import pprint
@@ -24,8 +25,17 @@ forgeRegionId = '10000002'
 """
 # Bottle debug mode
 debug(True)
+
 # automatically reload app if files changed
-# run(reloader=True)
+run(reloader=True)
+
+# install mysql plugin
+mysql_plugin = bottle_mysql.Plugin(
+    dbuser=local_settings.MySqlUser,
+    dbpass=local_settings.MySqlPwd,
+    dbname=local_settings.MySqlName,
+    dbhost=local_settings.MySqlHost
+)
 
 
 """
@@ -46,21 +56,48 @@ def index():
 
 @route('/', method='POST')
 @view('contractparser.html')
-def index():
+def index(db):
     output = ''
     item_list = []
+    item_row = None
 
     raw_data = request.forms.get('textAreaContract')
     for line in StringIO.StringIO(str(raw_data)):
         parts = line.split("\t")
-        try:
-            amount = int(parts[1])
-        except ValueError:
-            amount = None
 
-        item_list.append((parts[0], amount))
+        # catch error when not enough parts are found
+        try:
+            amount = parseint(parts[1])
+
+            # Todo: get item ID from DB
+            item_id = None
+            db.execute('SELECT * FROM invTypes WHERE typeName = %s' % parts[0].strip())
+            row = db.fetchone()
+
+            if row:
+                item_id = row[0]
+                irem_row = row
+
+            # build list entry
+            item_list.append([parts[0], item_id, amount, row])
+        except Exception:
+            output += traceback.format_exception()
+            # Todo: error handling
+            raise
+
+    # Todo: Sort and stack items
+
+    # Todo: get all Jita offers
+
+    # Todo: Filter highest bids
+
+    # Todo: cache highest bids 15 mins
+
+    # Todo: enrich item list with price data
 
     output += pprint.pformat(item_list)
+
+    # Todo: format output data?
 
     return dict(
         # result for display
@@ -70,6 +107,17 @@ def index():
         # debug output
         output=output
     )
+
+"""
+    parse string to integer in a consistent way
+"""
+def parseint(string):
+    try:
+        amount = int(string)
+    except ValueError:
+        # not repackaged things
+        amount = 1
+    return amount
 
 
 """
@@ -96,5 +144,6 @@ def csv_jitaores():
     return output
 
 
-# run Application
+# run application
 application = default_app()
+application.install(mysql_plugin)
