@@ -123,7 +123,7 @@ def index():
         buy_prices = list()
         sell_prices = list()
         for line in data['items']:
-            if item['typeID'] == line['type'] and line['stationID'] == jitaStationId:
+            if item['typeID'] == line['type']:
                 if line['buy']:
                     buy_prices.append(line['price'])
                 else:
