@@ -143,4 +143,4 @@ def csv_jitaores():
 
 # run application
 application = default_app()
-application.install(mysql_plugin)
+# application.install(mysql_plugin)
