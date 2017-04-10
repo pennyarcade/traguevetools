@@ -49,6 +49,11 @@ class InvType(peewee.Model):
     class Meta:
         database = db
         db_table = 'invTypes'
+        sorted_field_names = [
+            'typeId', 'groupID', 'typeName', 'description', 'mass', 'volume',
+            'capacity', 'portionSize', 'raceID', 'basePrice', 'published',
+            'marketGroupID', 'iconID', 'soundID', 'graphicID'
+        ]
 
 
 def get_model_from_dictionary(model, field_dict):
