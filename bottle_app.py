@@ -17,7 +17,7 @@ import Model
     
     Put global definitions here for now. Likely to move to a config module soon.
 """
-jitaStationId = '60003466'
+jitaStationId = 60003760
 forgeRegionId = '10000002'
 
 """
@@ -123,7 +123,7 @@ def index():
         buy_prices = list()
         sell_prices = list()
         for line in data['items']:
-            output += pprint.pformat((line['type'], line['stationID']))
+            output += pprint.pformat((line['type'], line['stationID'])) + "<br/>"
             if item['typeID'] == line['type'] and line['stationID'] == jitaStationId:
                 if line['buy']:
                     buy_prices.append(line['price'])
