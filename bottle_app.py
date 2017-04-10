@@ -3,12 +3,14 @@
 """
 
 from bottle import *
-import bottle_mysql
+import peewee
 import requests
 import traceback
 import pprint
 import local_settings
 import StringIO
+
+import Model
 
 """
     Globals Section
@@ -26,14 +28,19 @@ forgeRegionId = '10000002'
 # Bottle debug mode
 debug(True)
 
-# install mysql plugin
-mysql_plugin = bottle_mysql.Plugin(
-    dbuser=local_settings.MySqlUser,
-    dbpass=local_settings.MySqlPwd,
-    dbname=local_settings.MySqlName,
-    dbhost=local_settings.MySqlHost
-)
-install(mysql_plugin)
+
+"""
+    hooks for database integration    
+"""
+@hook('before_request')
+def _connect_db():
+    Model.db.connect()
+
+
+@hook('after_request')
+def _close_db():
+    if not Model.db.is_closed():
+        Model.db.close()
 
 
 """
@@ -54,7 +61,7 @@ def index():
 
 @route('/', method='POST')
 @view('contractparser.html')
-def index(db=None):
+def index():
     output = ''
     item_list = []
     item_row = None
@@ -68,16 +75,12 @@ def index(db=None):
             amount = parseint(parts[1])
 
             # Todo: get item ID from DB
-            item_id = None
-            db.execute('SELECT * FROM invTypes WHERE typeName = %s' % parts[0].strip())
-            row = db.fetchone()
-
-            if row:
-                item_id = row[0]
-                irem_row = row
+            item = Model.InvType.get(
+                Model.InvType.typeName == parts[0].strip()
+            )
 
             # build list entry
-            item_list.append([parts[0], item_id, amount, row])
+            item_list.append([parts[0], amount, item])
         except IndexError:
             output += ''.join(
                 traceback.format_exc()
