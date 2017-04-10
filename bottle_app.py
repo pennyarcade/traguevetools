@@ -62,37 +62,49 @@ def index():
 @route('/', method='POST')
 @view('contractparser.html')
 def index():
+    # saves debug output
     output = ''
+    # list of items from Input
     item_list = []
-    item_row = None
 
     raw_data = request.forms.get('textAreaContract')
     for line in StringIO.StringIO(str(raw_data)):
+        # inventory etries copied from eve are separated by tab caracters
         parts = line.split("\t")
 
         # catch error when not enough parts are found
         try:
             amount = parseint(parts[1])
 
-            # Todo: get item ID from DB
-            item = Model.get_dictionary_from_model(
-                Model.InvType.get(
-                    Model.InvType.typeName == parts[0].strip()
-                )
-            )
+            #stack items to remove duplicates
+            found = False
+            for index, line in enumerate(item_list):
+                if line[0] == parts[0].strip():
+                    line[1] += amount
+                    found = True
+                    item_list[index] = line
 
-            # build list entry
-            item_list.append([
-                parts[0],
-                amount,
-                item
-            ])
+            # add new item only if it is not in the list yet
+            if not found:
+                # get item ID from DB
+                item = Model.get_dictionary_from_model(
+                    Model.InvType.get(
+                        Model.InvType.typeName == parts[0].strip()
+                    )
+                )
+
+                # build list entry
+                item_list.append([
+                    parts[0],
+                    amount,
+                    item
+                ])
+
         except IndexError:
+            # dump parsing errors to debug output
             output += ''.join(
                 traceback.format_exc()
             )
-
-    # Todo: Sort and stack items
 
     # Todo: get all Jita offers
 
