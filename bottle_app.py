@@ -54,7 +54,7 @@ def index():
 
 @route('/', method='POST')
 @view('contractparser.html')
-def index(db):
+def index(db=None):
     output = ''
     item_list = []
     item_row = None
