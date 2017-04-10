@@ -26,9 +26,6 @@ forgeRegionId = '10000002'
 # Bottle debug mode
 debug(True)
 
-# automatically reload app if files changed
-run(reloader=True)
-
 # install mysql plugin
 mysql_plugin = bottle_mysql.Plugin(
     dbuser=local_settings.MySqlUser,
