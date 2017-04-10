@@ -116,13 +116,14 @@ def index():
     api_response = requests.get(endpoint_url, headers=headers)
     data = api_response.json()
 
-    output += pprint.pformat(data)
+    # output += pprint.pformat(data)
 
     #Filter highest bids
     for index, item in enumerate(item_list):
         buy_prices = list()
         sell_prices = list()
         for line in data['items']:
+            output += pprint.pformat((line['type'], line['stationID']))
             if item['typeID'] == line['type'] and line['stationID'] == jitaStationId:
                 if line['buy']:
                     buy_prices.append(line['price'])
@@ -130,10 +131,14 @@ def index():
                     sell_prices.append(line['price'])
 
         # enrich item list with price data
+        '''
         item['max_buy_price'] = max(buy_prices)
         item['min_buy_price'] = min(buy_prices)
         item['max_sell_price'] = max(sell_prices)
         item['min_sell_price'] = min(sell_prices)
+        '''
+        item['buy_prices'] = buy_prices
+        item['sell_prices'] = sell_prices
         item_list[index] = item
 
     output += pprint.pformat(item_list)
