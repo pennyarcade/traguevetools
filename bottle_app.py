@@ -123,7 +123,6 @@ def index():
         buy_prices = list()
         sell_prices = list()
         for line in data['items']:
-            output += pprint.pformat((line['type'], line['stationID'])) + "<br/>"
             if item['typeID'] == line['type'] and line['stationID'] == jitaStationId:
                 if line['buy']:
                     buy_prices.append(line['price'])
