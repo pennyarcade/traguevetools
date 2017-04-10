@@ -75,12 +75,18 @@ def index():
             amount = parseint(parts[1])
 
             # Todo: get item ID from DB
-            item = Model.InvType.get(
-                Model.InvType.typeName == parts[0].strip()
+            item = Model.get_dictionary_from_model(
+                Model.InvType.get(
+                    Model.InvType.typeName == parts[0].strip()
+                )
             )
 
             # build list entry
-            item_list.append([parts[0], amount, item])
+            item_list.append([
+                parts[0],
+                amount,
+                item
+            ])
         except IndexError:
             output += ''.join(
                 traceback.format_exc()
