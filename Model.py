@@ -45,16 +45,15 @@ class InvType(peewee.Model):
     iconID = peewee.IntegerField(db_column='iconID')
     soundID = peewee.IntegerField(db_column='soundID')
     graphicID = peewee.IntegerField(db_column='graphicID')
+    sorted_field_names = [
+        'typeId', 'groupID', 'typeName', 'description', 'mass', 'volume',
+        'capacity', 'portionSize', 'raceID', 'basePrice', 'published',
+        'marketGroupID', 'iconID', 'soundID', 'graphicID'
+    ]
 
     class Meta:
         database = db
         db_table = 'invTypes'
-        sorted_field_names = [
-            'typeId', 'groupID', 'typeName', 'description', 'mass', 'volume',
-            'capacity', 'portionSize', 'raceID', 'basePrice', 'published',
-            'marketGroupID', 'iconID', 'soundID', 'graphicID'
-        ]
-
 
 def get_model_from_dictionary(model, field_dict):
     if isinstance(model, Model):
@@ -89,7 +88,7 @@ def get_dictionary_from_model(model, fields=None, exclude=None):
     fields = fields or {}
     exclude = exclude or {}
     curr_exclude = exclude.get(model_class, [])
-    curr_fields = fields.get(model_class, model._meta.sorted_field_names)
+    curr_fields = fields.get(model_class, model.sorted_field_names)
 
     for field_name in curr_fields:
         if field_name in curr_exclude:
