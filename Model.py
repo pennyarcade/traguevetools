@@ -48,3 +48,4 @@ class InvType(peewee.Model):
 
     class Meta:
         database = db
+        db_table = 'invTypes'
