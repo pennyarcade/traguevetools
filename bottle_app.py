@@ -118,12 +118,11 @@ def index():
 
     output += pprint.pformat(data)
 
-    '''
     #Filter highest bids
     for index, item in enumerate(item_list):
         buy_prices = list()
         sell_prices = list()
-        for line in data:
+        for line in data['items']:
             if item['typeID'] == line['type'] and line['stationID'] == jitaStationId:
                 if line['buy']:
                     buy_prices.append(line['price'])
@@ -136,7 +135,6 @@ def index():
         item['max_sell_price'] = max(sell_prices)
         item['min_sell_price'] = min(sell_prices)
         item_list[index] = item
-    '''
 
     output += pprint.pformat(item_list)
 
