@@ -5,8 +5,7 @@ db = peewee.MySQLDatabase(
     local_settings.MySqlName,
     host=local_settings.MySqlHost,
     user=local_settings.MySqlUser,
-    passwd=local_settings.MySqlPwd,
-    db=local_settings.MySqlName
+    passwd=local_settings.MySqlPwd
 )
 
 class InvType(peewee.Model):
