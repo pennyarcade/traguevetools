@@ -116,7 +116,10 @@ def index():
     api_response = requests.get(endpoint_url, headers=headers)
     data = api_response.json()
 
-    # Todo: Filter highest bids
+    output += pprint.pformat(data)
+
+    '''
+    #Filter highest bids
     for index, item in enumerate(item_list):
         buy_prices = list()
         sell_prices = list()
@@ -133,9 +136,10 @@ def index():
         item['max_sell_price'] = max(sell_prices)
         item['min_sell_price'] = min(sell_prices)
         item_list[index] = item
-
+    '''
 
     output += pprint.pformat(item_list)
+
 
     # Todo: format output data?
 
