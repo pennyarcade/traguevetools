@@ -96,7 +96,7 @@ def get_dictionary_from_model(model, fields=None, exclude=None):
             continue
         field_obj = model_class._meta.fields[field_name]
         field_data = model._data.get(field_name)
-        if isinstance(field_obj, pewee.ForeignKeyField) and field_data and field_obj.rel_model in fields:
+        if isinstance(field_obj, peewee.ForeignKeyField) and field_data and field_obj.rel_model in fields:
             rel_obj = getattr(model, field_name)
             data[field_name] = get_dictionary_from_model(rel_obj, fields, exclude)
         else:
