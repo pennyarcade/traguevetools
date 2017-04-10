@@ -30,7 +30,7 @@ class InvType(peewee.Model):
         | graphicID     | int(11)       | YES  |     | NULL    |       |
         +---------------+---------------+------+-----+---------+-------+
     """
-    typeId = peewee.IntegerField(db_column='typeId', index=True)
+    typeId = peewee.PrimaryKeyField(db_column='typeId')
     groupID = peewee.IntegerField(db_column='groupID')
     typeName = peewee.CharField(max_length=100, db_column='typeName')
     description = peewee.TextField(db_column='description')
