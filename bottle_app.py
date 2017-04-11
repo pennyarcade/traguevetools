@@ -125,30 +125,34 @@ def index():
         buy_prices = list()
         sell_prices = list()
 
-        data = getJsonData(
-            '%s/market/%s/orders/?type=%s/inventory/types/%s/' % (
-                baseUrl,
-                jitaStationId,
-                baseUrl,
-                item['typeID']
-            ))
+        market_url = '%s/market/%s/orders/?type=%s/inventory/types/%s/' % (
+            baseUrl,
+            jitaStationId,
+            baseUrl,
+            item['typeID']
+        )
+        output += market_url + '<br/>'
 
-        for line in data['items']:
-            if line['location']['id'] == jitaStationId:
-                if line['buy']:
-                    buy_prices.append(line['price'])
-                else:
-                    sell_prices.append(line['price'])
+        data = getJsonData(market_url)
 
-        # enrich item list with price data
+        if 'items' in data:
+            for line in data['items']:
+                if line['location']['id'] == jitaStationId:
+                    if line['buy']:
+                        buy_prices.append(line['price'])
+                    else:
+                        sell_prices.append(line['price'])
 
-        item['max_buy_price'] = max(buy_prices) if len(buy_prices) else None
-        item['min_buy_price'] = min(buy_prices) if len(buy_prices) else None
-        item['max_sell_price'] = max(sell_prices) if len(sell_prices) else None
-        item['min_sell_price'] = min(sell_prices) if len(sell_prices) else None
-        item['buy_prices'] = buy_prices
-        item['sell_prices'] = sell_prices
-        item_list[index] = item
+            # enrich item list with price data
+            item['max_buy_price'] = max(buy_prices) if len(buy_prices) else None
+            item['min_buy_price'] = min(buy_prices) if len(buy_prices) else None
+            item['max_sell_price'] = max(sell_prices) if len(sell_prices) else None
+            item['min_sell_price'] = min(sell_prices) if len(sell_prices) else None
+            item['buy_prices'] = buy_prices
+            item['sell_prices'] = sell_prices
+            item_list[index] = item
+        else:
+            output += pprint.pformat(data)
 
     output += pprint.pformat(item_list)
 
@@ -173,6 +177,8 @@ def getJsonData(endpoint_url):
     }
     # get all orders from Forge region
     api_response = requests.get(endpoint_url, headers=headers)
+    if api_response.status_code != 200:
+        raise IOError(pprint.pformat(response))
     data = api_response.json()
     return data
 
