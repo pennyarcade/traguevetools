@@ -127,7 +127,7 @@ def index():
 
         market_url = '%s/market/%s/orders/?type=%s/inventory/types/%s/' % (
             baseUrl,
-            jitaStationId,
+            forgeRegionId,
             baseUrl,
             item['typeID']
         )
