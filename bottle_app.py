@@ -18,7 +18,9 @@ import Model
     Put global definitions here for now. Likely to move to a config module soon.
 """
 jitaStationId = 60003760
-forgeRegionId = '10000002'
+forgeRegionId = 10000002
+baseUrl = 'https://crest-tq.eveonline.com'
+
 
 """
     Bottle Setup Section
@@ -105,16 +107,16 @@ def index():
                 traceback.format_exc()
             )
 
-    # get all Jita offers
-    headers = {
-        # Eve Api Token is secret, sorry
-        'Authorisation': local_settings.ApiToken
-    }
-    endpoint_url = 'https://crest-tq.eveonline.com/market/10000002/orders/all/'
-
-    # get all orders from Forge region
-    api_response = requests.get(endpoint_url, headers=headers)
-    data = api_response.json()
+    '''
+        data = getJsonData('https://crest-tq.eveonline.com/market/10000002/orders/all/')
+        items = data['items']
+        next_url = data['next'] if 'next' in data else None
+    
+        while next_url is not None:
+            data = getJsonData(next_url)
+            items.extend(data['items'])
+            next_url = data['next'] if 'next' in data else None
+    '''
 
     # output += pprint.pformat(data)
 
@@ -122,20 +124,28 @@ def index():
     for index, item in enumerate(item_list):
         buy_prices = list()
         sell_prices = list()
+
+        data = getJsonData(
+            '%s/market/%s/orders/?type=%s/inventory/types/%s/' % (
+                baseUrl,
+                jitaStationId,
+                baseUrl,
+                item['typeID']
+            ))
+
         for line in data['items']:
-            if item['typeID'] == line['type']:
+            if line['location']['id'] == jitaStationId:
                 if line['buy']:
                     buy_prices.append(line['price'])
                 else:
                     sell_prices.append(line['price'])
 
         # enrich item list with price data
-        '''
-        item['max_buy_price'] = max(buy_prices)
-        item['min_buy_price'] = min(buy_prices)
-        item['max_sell_price'] = max(sell_prices)
-        item['min_sell_price'] = min(sell_prices)
-        '''
+
+        item['max_buy_price'] = max(buy_prices) if len(buy_prices) else None
+        item['min_buy_price'] = min(buy_prices) if len(buy_prices) else None
+        item['max_sell_price'] = max(sell_prices) if len(sell_prices) else None
+        item['min_sell_price'] = min(sell_prices) if len(sell_prices) else None
         item['buy_prices'] = buy_prices
         item['sell_prices'] = sell_prices
         item_list[index] = item
@@ -153,6 +163,19 @@ def index():
         # debug output
         output=output
     )
+
+
+def getJsonData(endpoint_url):
+    # get all Jita offers
+    headers = {
+        # Eve Api Token is secret, sorry
+        'Authorisation': local_settings.ApiToken
+    }
+    # get all orders from Forge region
+    api_response = requests.get(endpoint_url, headers=headers)
+    data = api_response.json()
+    return data
+
 
 def parseint(string):
     """
