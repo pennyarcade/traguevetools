@@ -163,7 +163,7 @@ def index():
 
     return dict(
         # result for display
-        result=item_list,
+        result=result,
         # form data to preset form for debugging
         inputdata=raw_data,
         # debug output
