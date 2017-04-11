@@ -10,6 +10,12 @@
             margin: 50px;
             background-color: #ccc;
         }
+        td {
+            margin: 3px;
+        }
+        table thead td, table thead td {
+            border: 1px solid;
+        }
 	</style>
 </head>
 <body>
@@ -34,10 +40,11 @@
                 <th>Jita Max Buy</th>
                 <th>Jita Min Sell</th>
                 <th>Jita Max Sell</th>
+                <th>Corp Buy price</th>
             </tr>
         </thead>
         <tbody>
-            % for line in result:
+            % for line in result['price_table']:
                 <tr>
                     <td>{{line['typeName']}}</td>
                     <td>{{line['typeID']}}</td>
@@ -45,9 +52,23 @@
                     <td>{{line['max_buy_price']}}</td>
                     <td>{{line['min_sell_price']}}</td>
                     <td>{{line['max_sell_price']}}</td>
+                    <td><strong>{{line['max_buy_price'] / 0.95}}</strong></td>
                 </tr>
             % end
         </tbody>
+        <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="border-top: 2px solid">
+                    <strong>&Sigma; {{result['sum']}}</strong>
+                </td>
+            </tr>
+        </tfoot>
     </table>
     % end
     % if output:
