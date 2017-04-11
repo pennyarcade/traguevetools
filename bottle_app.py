@@ -177,8 +177,8 @@ def getJsonData(endpoint_url):
     }
     # get all orders from Forge region
     api_response = requests.get(endpoint_url, headers=headers)
-    if api_response.status_code != 200:
-        raise IOError(pprint.pformat(api_response.raw))
+    if api_response.status_code > 299:
+        raise IOError(pprint.pformat(api_response.text))
     data = api_response.json()
     return data
 
