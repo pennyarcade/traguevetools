@@ -30,19 +30,21 @@
             <tr>
                 <th>Name</th>
                 <th>Id</th>
-                <th>Jita Buy</th>
-                <th>Jita Sell</th>
-                <th>Median</th>
+                <th>Jita Min Buy</th>
+                <th>Jita Max Buy</th>
+                <th>Jita Min Sell</th>
+                <th>Jita Max Sell</th>
             </tr>
         </thead>
         <tbody>
             % for line in result:
                 <tr>
-                    <td>{{line['itemName']}}</td>
-                    <td>{{line['itemId']}}</td>
-                    <td>{{line['jitaBuy']}}</td>
-                    <td>{{line['jitaSell']}}</td>
-                    <td>{{line['median']}}</td>
+                    <td>{{line['typeName']}}</td>
+                    <td>{{line['typeID']}}</td>
+                    <td>{{line['min_buy_price']}}</td>
+                    <td>{{line['max_buy_price']}}</td>
+                    <td>{{line['min_sell_price']}}</td>
+                    <td>{{line['max_sell_price']}}</td>
                 </tr>
             % end
         </tbody>

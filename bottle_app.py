@@ -131,7 +131,6 @@ def index():
             baseUrl,
             item['typeID']
         )
-        output += market_url + '<br/>'
 
         data = getJsonData(market_url)
 
@@ -154,14 +153,14 @@ def index():
         else:
             output += pprint.pformat(data)
 
-    output += pprint.pformat(item_list)
+    # output += pprint.pformat(item_list)
 
 
     # Todo: format output data?
 
     return dict(
         # result for display
-        result=None,
+        result=item_list,
         # form data to preset form for debugging
         inputdata=raw_data,
         # debug output
