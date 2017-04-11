@@ -155,8 +155,8 @@ def index():
 
     # output += pprint.pformat(item_list)
     result = {
-        'price_table': item_list
-        'sum': sum(item['max_buy_price'] for item in myLIst) / 0.95
+        'price_table': item_list,
+        'sum': sum(item['max_buy_price'] for item in item_list) / 0.95
     }
 
     # Todo: format output data?
