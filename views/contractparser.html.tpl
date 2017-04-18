@@ -385,25 +385,25 @@
                                         % for line in result['price_table']:
                                         <tr>
                                             <td>{{line['typeName']}}</td>
-                                            <td>{{line['typeID']}}</td>
-                                            <td>{{line['min_buy_price']}}</td>
-                                            <td>{{line['max_buy_price']}}</td>
-                                            <td>{{line['min_sell_price']}}</td>
-                                            <td>{{line['max_sell_price']}}</td>
-                                            <td><strong>{{'{:0.2f}'.format(line['max_buy_price'] * 0.95)}}</strong></td>
+                                            <td class="dt-body-right">{{line['typeID']}}</td>
+                                            <td class="dt-body-right">{{line['min_buy_price']}}</td>
+                                            <td class="dt-body-right">{{line['max_buy_price']}}</td>
+                                            <td class="dt-body-right">{{line['min_sell_price']}}</td>
+                                            <td class="dt-body-right">{{line['max_sell_price']}}</td>
+                                            <td class="dt-body-right"><strong>{{'{:0.2f}'.format(line['max_buy_price'] * 0.95)}}</strong></td>
                                         </tr>
                                         % end
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td style="border-top: 2px solid">
-                                                <strong>&Sigma; {{result['sum']}}</strong>
+                                            <td><strong>Sum</strong></td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">
+                                                <strong>{{result['sum']}}</strong>
                                             </td>
                                         </tr>
                                         </tfoot>
