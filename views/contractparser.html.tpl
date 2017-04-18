@@ -485,13 +485,13 @@
 <script src="/static/node_modules/gentelella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
 <script src="/static/node_modules/gentelella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="/static/node_modules/gentelella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script src="/static/node_modules/gentelella/vendors/datatables.net-scroller/js/datatables.scroller.min.js"></script>
+<script src="/static/node_modules/gentelella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
 <script src="/static/node_modules/gentelella/vendors/jszip/dist/jszip.min.js"></script>
 <script src="/static/node_modules/gentelella/vendors/pdfmake/build/pdfmake.min.js"></script>
 <script src="/static/node_modules/gentelella/vendors/pdfmake/build/vfs_fonts.js"></script>
 
 <!-- Custom Theme Scripts -->
-<script src="../build/js/custom.min.js"></script>
+<script src="/static/node_modules/gentelella/build/js/custom.min.js"></script>
 
 <!-- Datatables -->
 <script>
@@ -522,7 +522,8 @@
                   className: "btn-sm"
                 },
               ],
-              responsive: true
+              responsive: true,
+              keys: true
             });
           }
         };
@@ -535,25 +536,6 @@
             }
           };
         }();
-
-        $('#datatable').dataTable();
-        $('#datatable-keytable').DataTable({
-          keys: true
-        });
-
-        $('#datatable-responsive').DataTable();
-
-        $('#datatable-scroller').DataTable({
-          ajax: "js/datatables/json/scroller-demo.json",
-          deferRender: true,
-          scrollY: 380,
-          scrollCollapse: true,
-          scroller: true
-        });
-
-        var table = $('#datatable-fixed-header').DataTable({
-          fixedHeader: true
-        });
 
         TableManageButtons.init();
       });
