@@ -523,7 +523,16 @@
                 },
               ],
               responsive: true,
-              keys: true
+              keys: true,
+                "columns": [
+                    null,
+                    { className: "dt-body-right" },
+                    { className: "dt-body-right" },
+                    { className: "dt-body-right" },
+                    { className: "dt-body-right" },
+                    { className: "dt-body-right" },
+                    { className: "dt-body-right" }
+                  ]
             });
           }
         };
