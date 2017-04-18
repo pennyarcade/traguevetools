@@ -14,7 +14,7 @@ import Model
 
 """
     Globals Section
-    
+
     Put global definitions here for now. Likely to move to a config module soon.
 """
 jitaStationId = 60003760
@@ -32,7 +32,7 @@ debug(True)
 
 
 """
-    hooks for database integration    
+    hooks for database integration
 """
 @hook('before_request')
 def _connect_db():
@@ -49,7 +49,7 @@ def _close_db():
     contract parser
 """
 @route('/')
-@view('contractparser.html')
+@view('contractparser.html.tpl')
 def index():
     return dict(
         # result for display
@@ -62,7 +62,7 @@ def index():
 
 
 @route('/', method='POST')
-@view('contractparser.html')
+@view('contractparser.html.tpl')
 def index():
     # saves debug output
     output = ''
@@ -111,7 +111,7 @@ def index():
         data = getJsonData('https://crest-tq.eveonline.com/market/10000002/orders/all/')
         items = data['items']
         next_url = data['next'] if 'next' in data else None
-    
+
         while next_url is not None:
             data = getJsonData(next_url)
             items.extend(data['items'])
@@ -198,7 +198,7 @@ def parseint(string):
 
 
 """
-    get ore prices from jita and return as csv  
+    get ore prices from jita and return as csv
 """
 @route('/csv/jitaores')
 def csv_jitaores():
