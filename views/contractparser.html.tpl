@@ -390,7 +390,7 @@
                                             <td>{{line['max_buy_price']}}</td>
                                             <td>{{line['min_sell_price']}}</td>
                                             <td>{{line['max_sell_price']}}</td>
-                                            <td><strong>{{line['max_buy_price'] * 0.95}}</strong></td>
+                                            <td><strong>{{'{:0.2f}'.format(line['max_buy_price'] * 0.95)}}</strong></td>
                                         </tr>
                                         % end
                                         </tbody>
