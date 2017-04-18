@@ -29,6 +29,12 @@
 
     <!-- Custom Theme Style -->
     <link href="/static/node_modules/gentelella/build/css/custom.min.css" rel="stylesheet">
+
+    <style>
+        td.dt-body-right {
+            text-align: right;
+        }
+    </style>
 </head>
 
 <body class="nav-md">
@@ -523,16 +529,7 @@
                 },
               ],
               responsive: true,
-              keys: true,
-                "columns": [
-                    null,
-                    { className: "dt-body-right" },
-                    { className: "dt-body-right" },
-                    { className: "dt-body-right" },
-                    { className: "dt-body-right" },
-                    { className: "dt-body-right" },
-                    { className: "dt-body-right" }
-                  ]
+              keys: true
             });
           }
         };
