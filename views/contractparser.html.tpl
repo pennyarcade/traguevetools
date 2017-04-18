@@ -331,11 +331,14 @@
                                     Howto goes here...
                                 </p>
 
-                                <form method="post" id="contractData">
-                                    <textarea cols="80" rows="20" name="textAreaContract" id="textAreaContract">{{inputdata}}</textarea><br/>
-                                    <button id="reset" type="reset">Reset</button>
-                                    <button id="submit" type="submit">Calculate</button>
-                                    <br/>
+                                <form class="form-horizontal form-label-left input_mask" method="post" id="contractData">
+                                    <div class="form-group">
+                                        <textarea name="textAreaContract" id="textAreaContract" class="resizable_textarea form-control">{{inputdata}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary" id="reset" type="reset">Reset</button>
+                                        <button class="btn btn-success" id="submit" type="submit">Calculate</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
