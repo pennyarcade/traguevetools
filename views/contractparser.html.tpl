@@ -396,7 +396,7 @@
                                         </tbody>
                                         <tfoot>
                                         <tr>
-                                            <td><strong>Sum</strong></td>
+                                            <td style="border-top: 2px solid"><strong>Sum</strong></td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
