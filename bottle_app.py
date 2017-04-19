@@ -4,9 +4,8 @@
 
 from bottle import *
 
-import Model
-from contract_parser import contract_parser
-
+from controller.contract_parser import contract_parser
+from model import Model
 
 """
     Bottle Setup Section

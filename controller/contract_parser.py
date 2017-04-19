@@ -3,9 +3,9 @@ import pprint
 import requests
 import traceback
 
-import Model
 import common_settings
 import local_settings
+from model import Model
 
 
 def contract_parser(raw_data):
