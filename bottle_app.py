@@ -56,3 +56,5 @@ def index():
 
 # run application
 application = default_app()
+
+run()
