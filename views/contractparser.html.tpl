@@ -379,7 +379,7 @@
                                         <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Id</th>
+                                            <th>Amount</th>
                                             <th>Jita Min Buy</th>
                                             <th>Jita Max Buy</th>
                                             <th>Jita Min Sell</th>
@@ -392,7 +392,7 @@
                                         % for line in result['price_table']:
                                         <tr>
                                             <td>{{line['typeName']}}</td>
-                                            <td class="dt-body-right">{{line['typeID']}}</td>
+                                            <td class="dt-body-right">{{line['amount']}}</td>
                                             <td class="dt-body-right">{{line['min_buy_price']}}</td>
                                             <td class="dt-body-right">{{line['max_buy_price']}}</td>
                                             <td class="dt-body-right">{{line['min_sell_price']}}</td>
@@ -405,6 +405,7 @@
                                         <tfoot>
                                         <tr>
                                             <td style="border-top: 2px solid"><strong>Sum</strong></td>
+                                            <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
