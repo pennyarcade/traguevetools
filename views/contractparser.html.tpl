@@ -385,6 +385,7 @@
                                             <th>Jita Min Sell</th>
                                             <th>Jita Max Sell</th>
                                             <th>Corp Buy price</th>
+                                            <th>Corp Buy total</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -396,7 +397,8 @@
                                             <td class="dt-body-right">{{line['max_buy_price']}}</td>
                                             <td class="dt-body-right">{{line['min_sell_price']}}</td>
                                             <td class="dt-body-right">{{line['max_sell_price']}}</td>
-                                            <td class="dt-body-right"><strong>{{'{:0.2f}'.format(line['max_buy_price'] * 0.95)}}</strong></td>
+                                            <td class="dt-body-right">{{'{:0.2f}'.format(line['corp_buy'])}}</td>
+                                            <td class="dt-body-right"><strong>{{'{:0.2f}'.format(line['corp_buy_total'])}}</strong></td>
                                         </tr>
                                         % end
                                         </tbody>
@@ -409,7 +411,7 @@
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                                             <td class="dt-body-right" style="border-top: 2px solid">
-                                                <strong>{{result['sum']}}</strong>
+                                                <strong>{{'{:0.2f}'.format(result['sum'])}}</strong>
                                             </td>
                                         </tr>
                                         </tfoot>

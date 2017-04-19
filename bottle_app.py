@@ -3,7 +3,6 @@
 """
 
 from bottle import *
-import peewee
 import requests
 import traceback
 import pprint
@@ -149,6 +148,16 @@ def index():
             item['min_sell_price'] = min(sell_prices) if len(sell_prices) else None
             item['buy_prices'] = buy_prices
             item['sell_prices'] = sell_prices
+
+            item['corp_buy'] = None
+            if item['max_buy_price'] is not None:
+                item['corp_buy'] = (item['max_buy_price'] * 0.95)
+
+            item['corp_buy_total'] = None
+            if item['corp_buy'] is not None:
+                item['corp_buy_total'] = (item['corp_buy'] * item['amount'])
+
+
             item_list[index] = item
         else:
             output += pprint.pformat(data)
@@ -156,7 +165,7 @@ def index():
     # output += pprint.pformat(item_list)
     result = {
         'price_table': item_list,
-        'sum': '{:0.2f}'.format(sum(item['max_buy_price'] for item in item_list) * 0.95)
+        'sum': sum(item['corp_buy_total'] for item in item_list)
     }
 
     # Todo: format output data?
