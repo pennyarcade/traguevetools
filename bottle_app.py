@@ -2,13 +2,9 @@
     @TODO: Application Apidoc
 """
 
-import pprint
-import requests
-
 from bottle import *
 
 import Model
-import local_settings
 from contract_parser import contract_parser
 
 
