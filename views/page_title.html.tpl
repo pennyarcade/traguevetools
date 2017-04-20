@@ -1,7 +1,7 @@
                 <div class="page-title">
                     <div class="title_left">
-                        <h3>{{get(title, default="*** Place title here ***")}}
-                            <small>{{get(sub_title, default="*** Place subtitle here ***")}}</small>
+                        <h3>{{get('title', "*** Place title here ***")}}
+                            <small>{{get('sub_title', "*** Place subtitle here ***")}}</small>
                         </h3>
                     </div>
 

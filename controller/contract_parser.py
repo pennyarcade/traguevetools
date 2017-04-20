@@ -114,7 +114,7 @@ def enrich_item(data, item, buy_prices, sell_prices):
         :return: void
     """
     for line in data['items']:
-        if line['location']['id'] == jitaStationId:
+        if line['location']['id'] == common_settings.jitaStationId:
             if line['buy']:
                 buy_prices.append(line['price'])
             else:

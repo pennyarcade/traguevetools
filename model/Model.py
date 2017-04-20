@@ -1,12 +1,17 @@
 import peewee
 import local_settings
 
-db = peewee.MySQLDatabase(
-    local_settings.MySqlName,
-    host=local_settings.MySqlHost,
-    user=local_settings.MySqlUser,
-    passwd=local_settings.MySqlPwd
-)
+
+if local_settings.environment == "prod":
+    db = peewee.MySQLDatabase(
+        local_settings.MySqlName,
+        host=local_settings.MySqlHost,
+        user=local_settings.MySqlUser,
+        passwd=local_settings.MySqlPwd
+    )
+else:
+    db = peewee.SqliteDatabase('sdc/sqlite-latest.sqlite')
+
 
 class InvType(peewee.Model):
     """

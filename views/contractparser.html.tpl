@@ -1,7 +1,7 @@
 <%
     page = {
         'title': 'Contract Parser',
-        'sub_title': 'Copy &amp; paste from your ingame inventory',
+        'sub_title': 'Copy & paste from your ingame inventory',
         'js': '/static/js/contractparser.js'
     }
 
