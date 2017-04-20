@@ -41,6 +41,7 @@ class IssueCollection:
         self.count = data['count']
         self.filter = data['filter']
         for item in data['issues']:
+            print item
             self.issues.append(
                 Issue(
                     self.bb,
@@ -55,7 +56,7 @@ class IssueCollection:
         
         :return: 
         """
-        success, result = self.bb.issues.all()
+        success, result = self.bb.issue.all()
 
         if not success:
             raise BitbucketException(
@@ -101,11 +102,14 @@ class Issue:
         :param bb: instance of Bitbucket
         :param kwargs: 
         """
+        # if dict given build from dictionary
+        if 'from_dict' in kwargs:
+            self.__from_dict(kwargs['from_dict'])
+
         # if id given fetch from repository
         # if url given fetch from url
-        # if dict given build from dictionary
         # check all parameters
-        pass
+
 
     def __from_dict(self, data):
         """
@@ -114,9 +118,9 @@ class Issue:
         :param data: 
         :return: 
         """
-        for key, value in data:
+        for key, value in data.iteritems():
             if key == 'metadata':
-                for metakey, metavalue in value:
+                for metakey, metavalue in value.iteritems():
                     setattr(self, metakey, metavalue)
             else:
                 setattr(self, key, value)
@@ -156,7 +160,7 @@ class Issue:
                     status=self.status,
                     kind=self.kind
                 )
-            except Exception as e:
+            except Exception:
                 raise BitbucketException(
                     'Error updating issue %d' % self.local_id,
                 )
@@ -174,3 +178,5 @@ class Issue:
                         status=self.status,
                         kind=self.kind
                     )
+                except:
+                    pass

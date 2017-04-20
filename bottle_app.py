@@ -5,6 +5,8 @@
 from bottle import *
 
 from controller.contract_parser import contract_parser
+from controller.development import development
+
 from model import Model
 import local_settings
 
@@ -38,6 +40,8 @@ def _close_db():
 @view('contractparser.html.tpl')
 def index():
     return dict(
+        # messages to display on top
+        messages=[],
         # result for display
         result=None,
         # form data to preset form for debugging
@@ -53,6 +57,25 @@ def index():
     return contract_parser(
         request.forms.get('textAreaContract')
     )
+
+
+"""
+    development page
+"""
+@route('/development')
+@route('/development', method='POST')
+@view('development.html.tpl')
+def index():
+    return development(request=request, response=response)
+
+
+@route('/development/<id:int>')
+@route('/development/<id:int>', method='POST')
+@view('development.html.tpl')
+def index():
+    return development(request=request, response=response, issue_id=id)
+
+
 
 if local_settings.environment != "prod":
     @route('/static/<filename:path>')
