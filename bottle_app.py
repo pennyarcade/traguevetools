@@ -53,7 +53,7 @@ def index():
 
 @route('/', method='POST')
 @view('contractparser.html.tpl')
-def index():
+def index_post():
     return contract_parser(
         request.forms.get('textAreaContract')
     )
@@ -65,14 +65,14 @@ def index():
 @route('/development')
 @route('/development', method='POST')
 @view('development.html.tpl')
-def index():
+def development_page():
     return development(request=request, response=response)
 
 
 @route('/development/<id:int>')
 @route('/development/<id:int>', method='POST')
 @view('development.html.tpl')
-def index():
+def development_page_detail(id):
     return development(request=request, response=response, issue_id=id)
 
 

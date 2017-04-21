@@ -44,12 +44,25 @@ def development(request= None, response=None, issue_id=None):
         success, issue = repo.issue.get(issue_id)
         if success:
             result['current'] = issue
+
+            success, comments = repo.issue.comment.all(issue_id)
+            if success:
+                result['current']['comments'] = comments
+            else:
+                messages.append(
+                    {
+                        'type': 'danger',
+                        'dismissible': False,
+                        'content': '<strong>Error:</strong> Unable to fetch comments for Issue #' + issue_id + ':<pre>' + comments + '</pre>'
+                    }
+                )
+
         else:
             messages.append(
                 {
                     'type': 'danger',
                     'dismissible': False,
-                    'content': '<strong>Error:</strong> Issue #' + issue_id + ':<pre>' + issues + '</pre>'
+                    'content': '<strong>Error:</strong> Unable to fetch Issue #' + issue_id + ':<pre>' + issues + '</pre>'
                 }
             )
 
