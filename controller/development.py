@@ -79,6 +79,3 @@ def development(request= None, response=None, issue_id=None):
         # debug output
         output=output + ' Hola!'
     )
-
-
-
