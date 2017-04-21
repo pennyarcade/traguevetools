@@ -5,7 +5,7 @@
         kclass = 'fa-lightbulb-o'
     elif issue['metadata']['kind'] == 'proposal':
         kclass = 'fa-comment'
-    elif issue['metadata']['kind'] == 'proposal':
+    elif issue['metadata']['kind'] == 'task':
         kclass = 'fa-wrench'
     else:
         kclass = 'fa-square-o'

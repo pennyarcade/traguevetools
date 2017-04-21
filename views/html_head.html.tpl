@@ -24,6 +24,8 @@
           rel="stylesheet">
     <link href="/static/node_modules/gentelella/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css"
           rel="stylesheet">
+    <link href="/static/node_modules/simplemde/dist/simplemde.min.css"
+          rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="/static/node_modules/gentelella/build/css/custom.min.css" rel="stylesheet">
