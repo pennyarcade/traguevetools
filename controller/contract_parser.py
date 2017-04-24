@@ -71,7 +71,7 @@ def contract_parser(raw_data):
             enrich_item(data, item, buy_prices, sell_prices)
 
             if item['max_buy_price'] != None:
-                total += item['max_buy_price']
+                total += item['corp_buy_total']
 
             item_list[index] = item
         else:
