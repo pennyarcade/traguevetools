@@ -92,15 +92,15 @@
                     </thead>
                     <tbody>
                     % for line in result['price_table']:
-                    <tr>
+                    <tr style="{{'background-color:#f88;' if not line['max_buy_price'] else ''}}">
                         <td>{{line['typeName']}}</td>
                         <td class="dt-body-right">{{line['amount']}}</td>
                         <td class="dt-body-right">{{line['min_buy_price']}}</td>
                         <td class="dt-body-right">{{line['max_buy_price']}}</td>
                         <td class="dt-body-right">{{line['min_sell_price']}}</td>
                         <td class="dt-body-right">{{line['max_sell_price']}}</td>
-                        <td class="dt-body-right">{{'{:0.2f}'.format(line['corp_buy'])}}</td>
-                        <td class="dt-body-right"><strong>{{'{:0.2f}'.format(line['corp_buy_total'])}}</strong></td>
+                        <td class="dt-body-right">{{'{:0.2f}'.format(line['corp_buy']) if line['corp_buy'] else 'None'}}</td>
+                        <td class="dt-body-right"><strong>{{'{:0.2f}'.format(line['corp_buy_total']) if line['corp_buy_total'] else 'None'}}</strong></td>
                     </tr>
                     % end
                     </tbody>

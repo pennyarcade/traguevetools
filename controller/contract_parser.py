@@ -53,6 +53,7 @@ def contract_parser(raw_data):
             )
 
     # Filter highest bids
+    total = 0
     for index, item in enumerate(item_list):
         buy_prices = list()
         sell_prices = list()
@@ -69,6 +70,9 @@ def contract_parser(raw_data):
         if 'items' in data:
             enrich_item(data, item, buy_prices, sell_prices)
 
+            if item['max_buy_price'] != None:
+                total += item['max_buy_price']
+
             item_list[index] = item
         else:
             output += pprint.pformat(data)
@@ -76,7 +80,7 @@ def contract_parser(raw_data):
     # output += pprint.pformat(item_list)
     result = {
         'price_table': item_list,
-        'sum': sum(item['corp_buy_total'] for item in item_list)
+        'sum': total
     }
     response_dict = dict(
         # messages & notifications
@@ -159,7 +163,7 @@ def parseint(string):
         parse string to integer in a consistent way
     """
     try:
-        amount = int(string)
+        amount = int(string.translate(None, ','))
     except ValueError:
         # not repackaged things
         amount = 1
