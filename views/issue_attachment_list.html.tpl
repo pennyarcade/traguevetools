@@ -1,4 +1,4 @@
-<div class="attachment">
+<!--div class="attachment">
     <p>
       <span><i class="fa fa-paperclip"></i> 3 attachments — </span>
       <a href="#">Download all attachments</a> |
@@ -23,4 +23,4 @@
       </li>
 
     </ul>
-</div>
+</div-->

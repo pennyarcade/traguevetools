@@ -36,7 +36,13 @@
       % end
     </div>
     <div class="right">
-      <h3>{{issue['reported_by']['display_name']}} <small>{{issue['created_on']}}</small></h3>
+      <h3>
+          <span class="image">
+            <img src="{{issue['reported_by']['avatar']}}" alt="[img]">
+          </span>
+
+          {{issue['reported_by']['display_name']}} <small>{{issue['utc_created_on'].strftime('%y-%m-%d %H:%M')}}</small>
+      </h3>
       <p><span class="badge">{{issue['status']}}</span>&nbsp;{{issue['title']}}</p>
     </div>
   </div>

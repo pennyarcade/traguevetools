@@ -35,17 +35,12 @@
               <div class="inbox-body">
                 <div class="mail_heading row">
                     <div class="col-md-8">
-                      <div class="btn-group">
-                        % include('issue_form_reply.html.tpl', page=page, only_button=False)
+                      % include('issue_form_reply.html.tpl', page=page, only_button=True)
 
-                        <!--button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
-                        <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
-                        <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button-->
-                      </div>
                     </div>
 
                     <div class="col-md-4 text-right">
-                      <p class="date">{{result['current']['created_on']}}</p>
+                      <p class="date">{{result['current']['utc_created_on'].strftime('%y-%m-%d %H:%M')}}</p>
                     </div>
 
                     <div class="col-md-12">
@@ -55,24 +50,22 @@
                 <div class="sender-info">
                     <div class="row">
                       <div class="col-md-12">
-                        <strong>Jon Doe</strong>
-                        <span>(jon.doe@gmail.com)</span> to
-                        <strong>me</strong>
-                        <a class="sender-dropdown"><i class="fa fa-chevron-down"></i></a>
+                        <span class="image">
+                          <img src="{{result['current']['reported_by']['avatar']}}" alt="[img]">
+                        </span>&nbsp;
+                        <strong>{{result['current']['reported_by']['display_name']}}</strong>
+                        <span class="badge">{{result['current']['status']}}</span>
+                        <span class="badge">{{result['current']['metadata']['kind']}}</span>
+                        <span class="badge">{{result['current']['priority']}}</span>
                       </div>
                     </div>
-                  </div>
+                </div>
                 <div class="view-mail">
                     {{!result['current']['content']}}
                 </div>
                 % include('issue_reply_list.html.tpl', issue=result['current'])
                 % include('issue_attachment_list.html.tpl', issue=result['current'])
-                <div class="btn-group">
-                    % include('issue_form_reply.html.tpl', page=page, only_button=True)
-                    <!--button class="btn btn-sm btn-default" type="button"  data-placement="top" data-toggle="tooltip" data-original-title="Forward"><i class="fa fa-share"></i></button>
-                    <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Print"><i class="fa fa-print"></i></button>
-                    <button class="btn btn-sm btn-default" type="button" data-placement="top" data-toggle="tooltip" data-original-title="Trash"><i class="fa fa-trash-o"></i></button-->
-                </div>
+                % include('issue_form_reply.html.tpl', page=page, only_button=False)
               </div>
             % end
           </div>
