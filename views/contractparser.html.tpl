@@ -35,8 +35,25 @@
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
+            <h4>How to use this page:</h4>
             <p class="text-muted font-13 m-b-30">
-                Howto goes here...
+                <ol>
+                    <li>Select all items want to sell to the corporation in your inventory</li>
+                    <li>Press <strong>CTRL+C</strong> to copy</li>
+                    <li>Switch to your browser and open this page</li>
+                    <li>Click into the textbox below and press <strong>CTRL+V</strong> to paste</li>
+                    <li>Click "Calculate"</li>
+                    <li>Select and copy the total value at the bottom of the table</li>
+                    <li>Switch back to the game</li>
+                    <li>Rightclick the selected inventory entries and select "Create Contract"</li>
+                    <li>Select "Item Exchange" and "My Corporation" and click "Next"</li>
+                    <li>Review items and click "Next"</li>
+                    <li>Paste the calculated value from above into "I will recieve"</li>
+                    <li>Add a sensible Description like "Ore buyback"</li>
+                    <li>Set expiration to 2 weeks and click "Next"</li>
+                    <li>Review the contract settings abd click "Finish"</li>
+                    <li>Wait for our buyers to complete the transaction.</li>
+                </ol>
             </p>
 
             <form class="form-horizontal form-label-left input_mask" method="post" id="contractData">
