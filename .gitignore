@@ -126,3 +126,5 @@ puphpet/config-custom.yaml
 sdc/sqlite-latest.sqlite.bz2
 sdc/sqlite-latest.sqlite
 
+# ssl certificate for testing purposes
+/server.pem
