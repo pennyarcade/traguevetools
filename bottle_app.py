@@ -3,12 +3,17 @@
 """
 
 from bottle import *
+from plugin.bottle_sslify import SSLify
+from plugin.bottle_ssl import SSLWSGIRefServer
+import plugin.canister as canister
 
-from controller.contract_parser import contract_parser
+from controller.contract_parser import ContractController
 from controller.development import development
+from controller.login import login
 
 from model import Model
 import local_settings
+
 
 """
     Bottle Setup Section
@@ -17,6 +22,15 @@ import local_settings
 """
 # Bottle debug mode
 debug(True)
+# run application
+application = default_app()
+
+# register and configure canister plugin for auth and sessions
+application.config.load_config('config.cfg')
+application.install(canister.Canister())
+
+# register controllers
+ContractController.register(application)
 
 
 """
@@ -34,47 +48,18 @@ def _close_db():
 
 
 """
-    contract parser
+    redirect to index page
 """
-@route('/')
-@view('contractparser.html.tpl')
+@route('/', method='ANY')
 def index():
-    return dict(
-        # messages to display on top
-        messages=[],
-        # result for display
-        result=None,
-        # form data to preset form for debugging
-        inputdata='',
-        # debug output
-        output=None
-    )
+    redirect('/contract/')
 
 
-@route('/', method='POST')
-@view('contractparser.html.tpl')
-def index_post():
-    return contract_parser(
-        request.forms.get('textAreaContract')
-    )
 
-
-"""
-    development page
-"""
-@route('/development')
-@route('/development', method='POST')
-@view('development.html.tpl')
-def development_page():
-    return development(request=request, response=response)
-
-
-@route('/development/<id:int>')
-@route('/development/<id:int>', method='POST')
-@view('development.html.tpl')
-def development_page_detail(id):
-    return development(request=request, response=response, issue_id=id)
-
+@route('/login/')
+@route('/authcallback/')
+def login():
+    return login(request=request, response=response)
 
 
 if local_settings.environment != "prod":
@@ -90,8 +75,8 @@ if local_settings.environment != "prod":
         return static_file(filename, root=path)
 
 
-# run application
-application = default_app()
-
 if __name__ == "__main__":
-    run()
+    srv = SSLWSGIRefServer(host="127.0.0.1", port=8090)
+    run(server=srv)
+else:
+    SSLify(application)
