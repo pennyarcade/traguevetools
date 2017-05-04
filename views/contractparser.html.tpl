@@ -1,12 +1,4 @@
 <%
-    page = {
-        'title': 'Contract Parser',
-        'sub_title': 'Copy & paste from your ingame inventory',
-        'js': '/static/js/contractparser.js',
-        'messages': messages,
-        'output': output
-    }
-
     rebase('skeleton.html.tpl', page=page)
 %>
 
@@ -41,7 +33,7 @@
 
             <form class="form-horizontal form-label-left input_mask" method="post" id="contractData">
                 <div class="form-group">
-                    <textarea name="textAreaContract" id="textAreaContract" class="resizable_textarea form-control">{{inputdata}}</textarea>
+                    <textarea name="textAreaContract" id="textAreaContract" class="resizable_textarea form-control">{{page[inputdata}}</textarea>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" id="reset" type="reset">Reset</button>

@@ -1,5 +1,7 @@
 <%
     from pprint import pformat
+    import local_settings
+    from controller.common import *
 
     page = {
         'title': 'Development',
@@ -7,7 +9,6 @@
         'js': '/static/js/development.js',
         'messages': messages,
         'output': output
-
     }
 
     rebase('skeleton.html.tpl', page=page)

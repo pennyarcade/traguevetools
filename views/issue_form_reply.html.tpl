@@ -15,7 +15,7 @@
       <form
               class="form-horizontal form-label-left input_mask"
               name="reply_issue"
-              method="POST"
+              method="PUT"
               id="reply_issue"
       >
         <input

@@ -5,9 +5,9 @@
 <body class="nav-md">
 <div class="container body">
     <div class="main_container">
-        % include('sidebar.html.tpl')
+        % include('sidebar.html.tpl', page=page)
 
-        % include('top_nav.html.tpl')
+        % include('top_nav.html.tpl', page=page)
 
         <!-- page content -->
         <div class="right_col" role="main">
@@ -52,7 +52,7 @@
         </div>
         <!-- /page content -->
 
-        % include('page_footer.html.tpl')
+        % include('page_footer.html.tpl', page=page)
     </div>
 </div>
 
