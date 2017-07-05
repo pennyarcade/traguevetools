@@ -50,7 +50,7 @@
 
             <form class="form-horizontal form-label-left input_mask" method="post" id="contractData">
                 <div class="form-group">
-                    <textarea name="textAreaContract" id="textAreaContract" class="resizable_textarea form-control">{{page[inputdata}}</textarea>
+                    <textarea name="textAreaContract" id="textAreaContract" class="resizable_textarea form-control">{{page['input_data'] if page['input_data'] is not None else '' }}</textarea>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-primary" id="reset" type="reset">Reset</button>
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-% if result is not None:
+% if page['result'] is not None:
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
@@ -100,16 +100,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    % for line in result['price_table']:
-                    <tr style="{{'background-color:#f88;' if not line['max_buy_price'] else ''}}">
+                    % for line in page['result']['price_table']:
+                    <tr style="{{'background-color:#f88;' if not line.has_key('max_buy_price') else ''}}">
                         <td>{{line['typeName']}}</td>
                         <td class="dt-body-right">{{line['amount']}}</td>
-                        <td class="dt-body-right">{{line['min_buy_price']}}</td>
-                        <td class="dt-body-right">{{line['max_buy_price']}}</td>
-                        <td class="dt-body-right">{{line['min_sell_price']}}</td>
-                        <td class="dt-body-right">{{line['max_sell_price']}}</td>
-                        <td class="dt-body-right">{{'{:0.2f}'.format(line['corp_buy']) if line['corp_buy'] else 'None'}}</td>
-                        <td class="dt-body-right"><strong>{{'{:0.2f}'.format(line['corp_buy_total']) if line['corp_buy_total'] else 'None'}}</strong></td>
+                        <td class="dt-body-right">{{line['min_buy_price'] if line.has_key('min_buy_price') else ''}}</td>
+                        <td class="dt-body-right">{{get(line['max_buy_price'] if line.has_key('max_buy_price') else '')}}</td>
+                        <td class="dt-body-right">{{get(line['min_sell_price'] if line.has_key('min_sell_price') else '')}}</td>
+                        <td class="dt-body-right">{{get(line['max_sell_price'] if line.has_key('max_sell_price') else '')}}</td>
+                        <td class="dt-body-right">{{'{:,.2f}'.format(line['corp_buy']) if line.get('corp_buy') else 'None'}}</td>
+                        <td class="dt-body-right"><strong>{{'{:,.2f}'.format(line['corp_buy_total']) if line.get('corp_buy_total') else 'None'}}</strong></td>
                     </tr>
                     % end
                     </tbody>
@@ -123,7 +123,7 @@
                         <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                         <td class="dt-body-right" style="border-top: 2px solid">&nbsp;</td>
                         <td class="dt-body-right" style="border-top: 2px solid">
-                            <strong>{{'{:0.2f}'.format(result['sum'])}}</strong>
+                            <strong>{{'{:,.2f}'.format(page['result']['sum'])}}</strong>
                         </td>
                     </tr>
                     </tfoot>

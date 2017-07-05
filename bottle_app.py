@@ -6,9 +6,11 @@ from bottle import *
 from plugin.bottle_sslify import SSLify
 from plugin.bottle_ssl import SSLWSGIRefServer
 import plugin.canister as canister
+import logging
 
 from controller.contract_parser import ContractController
-from controller.development import development
+from controller.development import DevelopmentController
+from controller.donations import DonationsController
 from controller.login import login
 
 from model import Model
@@ -31,6 +33,18 @@ application.install(canister.Canister())
 
 # register controllers
 ContractController.register(application)
+DevelopmentController.register(application)
+DonationsController.register(application)
+
+
+logging.basicConfig(
+        filename='logs/requests.log',
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s'
+    )
+logger = logging.getLogger('peewee')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.FileHandler('logs/peewee.log'))
 
 
 """
@@ -50,10 +64,11 @@ def _close_db():
 """
     redirect to index page
 """
+
+
 @route('/', method='ANY')
 def index():
     redirect('/contract/')
-
 
 
 @route('/login/')

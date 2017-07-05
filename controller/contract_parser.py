@@ -29,7 +29,7 @@ class ContractController(BaseController):
         self.__contract_parser(
             request.forms.get('textAreaContract')
         )
-        return self.__render()
+        return self._render()
 
     def __contract_parser(self, raw_data):
         """
@@ -87,7 +87,7 @@ class ContractController(BaseController):
 
             data = self.__getJsonData(market_url)
 
-            if 'items' in data:
+            if data is not None and 'items' in data:
                 self.__enrich_item(data, item, buy_prices, sell_prices)
 
                 if item['max_buy_price'] is not None:
@@ -151,6 +151,7 @@ class ContractController(BaseController):
             item['corp_buy_total'] = (item['corp_buy'] * item['amount'])
 
     def __getJsonData(self, endpoint_url):
+        data = None
         # get all Jita offers
         headers = {
             # Eve Api Token is secret, sorry
@@ -159,8 +160,22 @@ class ContractController(BaseController):
         # get all orders from Forge region
         api_response = requests.get(endpoint_url, headers=headers)
         if api_response.status_code > 299:
-            raise IOError(endpoint_url + " " + str(api_response.status_code) + " " + pprint.pformat(api_response.text))
-        data = api_response.json()
+            self.messages.append(
+                {
+                    'type': 'danger',
+                    'dismissible': False,
+                    'content': ''.join(
+                        '<strong>Error:</strong> Unable to fetch data:<pre>',
+                        endpoint_url, " ",
+                        str(api_response.status_code), "\n",
+                        pprint.pformat(api_response.text),
+                        '</pre>'
+                    )
+                }
+            )
+            self.output += pprint.pformat(api_response.text)
+        else:
+            data = api_response.json()
         return data
 
     def __parseint(self, string):

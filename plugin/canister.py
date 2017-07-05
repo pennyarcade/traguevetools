@@ -15,6 +15,7 @@ import threading
 import base64
 import os
 import os.path
+import errno
 import jwt
 import hashlib
 import inspect
@@ -79,7 +80,13 @@ def _buildLogger(config):
     if not path:
         h = logging.StreamHandler()
     else:
-        os.makedirs(path, exist_ok=True)
+        try:
+            os.makedirs(path)
+        except OSError as exc:  # Python >2.5
+            if exc.errno == errno.EEXIST and os.path.isdir(path):
+                pass
+            else:
+                raise
         h = logging.handlers.TimedRotatingFileHandler(os.path.join(path, 'log'), when='midnight', backupCount=int(days))
 
     log.setLevel(level)

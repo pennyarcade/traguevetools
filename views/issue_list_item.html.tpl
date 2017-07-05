@@ -25,7 +25,7 @@
         pclass = 'fa-square-o'
     end
 %>
-<a href="/development/{{issue['local_id']}}">
+<a href="/development/{{issue['local_id']}}/">
   <div class="mail_list">
     <div class="left">
       % if issue['metadata']['kind']:

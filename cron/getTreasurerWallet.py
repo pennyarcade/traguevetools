@@ -14,10 +14,19 @@ from requests.sessions import Session
 from pprint import pprint, pformat
 
 import common_settings
+from model import Model
 
 
-logging.basicConfig(filename='logs/getTreasurerWallet.log', level=logging.INFO,
-                    format='%(asctime)s %(levelname)s %(message)s')
+logging.basicConfig(
+    filename='logs/getTreasurerWallet.log',
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s %(message)s'
+)
+Model.db.connect()
+
+logger = logging.getLogger('peewee')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.FileHandler('logs/peewee.log'))
 
 # Constant definitions
 refresh_url = 'https://login.eveonline.com/oauth/token'
@@ -64,9 +73,37 @@ def run():
     logging.info('Response status {}'.format(wallet_journal.status_code))
     logging.info('Response headers \n{}'.format(pformat(wallet_journal.headers)))
 
-    # just dump to commandline for demonstration purpose
-    pprint(wallet_journal.json())
-
+    wallet_result = wallet_journal.json()
+    if 'error' not in wallet_result:
+        for row in wallet_result:
+            logging.info('Building item \n{}'.format(pformat(row)))
+            item, created = Model.WalletTransactions.get_or_create(
+                amount=row[u'amount'] if u'amount' in row else None,
+                argumentName=row[u'argument_name'] if u'argument_name' in row else None,
+                argumentValue=row[u'argument_value'] if u'argument_value' in row else None,
+                balance=row[u'balance'] if u'balance' in row else None,
+                date=row[u'date'],
+                firstPartyID=row[u'first_party_id'] if u'first_party_id' in row else None,
+                firstPartyType=row[u'first_party_type'] if u'first_party_type' in row else None,
+                reason=row[u'reason'] if u'reason' in row else None,
+                refID=row[u'ref_id'],
+                refTypeID=row[u'ref_type_id'],
+                secondPartyID=row[u'second_party_id'] if u'second_party_id' in row else None,
+                secondPartyType=row[u'second_party_type'] if u'second_party_type' in row else None,
+                taxAmount=row[u'tax_amount'] if u'tax_amount' in row else None,
+                taxRecieverID=row[u'tax_reciever_id'] if u'tax_reciever_id' in row else None,
+            )
+            if created:
+                logging.info('Item #{} already created.'.format(row[u'ref_id']))
+            else:
+                logging.info('Inserting item #{}'.format(row[u'ref_id']))
+            item.save()
+    else:
+        logging.error(
+            'Response headers \n{}'.format(
+                pformat(wallet_result)
+            )
+        )
 
 # if called from command line run main function
 if __name__ == '__main__':

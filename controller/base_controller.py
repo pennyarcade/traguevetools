@@ -3,6 +3,7 @@ from plugin.bottleCBV import BottleView
 
 # import common_settings
 # import local_settings
+import logging
 
 
 class BaseController(BottleView):
@@ -28,6 +29,13 @@ class BaseController(BottleView):
     # @TODO: refactor to use array
     js = ''
 
+    def __init__(self, *args, **kwargs):
+        super(BaseController, self).__init__(*args, **kwargs)
+
+        self.log = logging.getLogger('controller')
+        self.log.setLevel(logging.DEBUG)
+        self.log.addHandler(logging.FileHandler('logs/requests.log'))
+
     def index(self):
         """
         just render the page without any inputs
@@ -35,7 +43,7 @@ class BaseController(BottleView):
         """
         return self.__render()
 
-    def __render(self):
+    def _render(self):
         """
             reformat class variables into the response array
             :return: 

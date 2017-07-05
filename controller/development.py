@@ -1,6 +1,7 @@
 from dateutil import parser
 
 from bottle import request
+from plugin.bottleCBV import route
 
 # import common_settings
 import local_settings
@@ -33,28 +34,15 @@ class DevelopmentController(BaseController):
         :return: 
         """
         self.__get_issue_list()
-        return self.__render()
+        return self._render()
 
     def post(self):
         """
         Process forms
         """
-        self.__get_issue_list()
-
         # Todo: Verify form data
         if request.forms.get('form') == "new_issue":
-            content = self.content % (
-                request.forms.get('issue_name'),
-                request.forms.get('issue_content')
-            )
-            self.repo.issue.create(
-                title=request.forms.get('issue_subject'),
-                content=content,
-                component=request.forms.get('issue_component'),
-                status='new',
-                kind=request.forms.get('issue_kind'),
-                priority=request.forms.get('issue_priority')
-            )
+            self.__new_issue()
         else:
             self.messages.append(
                 {
@@ -64,7 +52,8 @@ class DevelopmentController(BaseController):
                 }
             )
 
-        return self.__render()
+        self.__get_issue_list()
+        return self._render()
 
     def get(self, issue_id):
         """
@@ -74,25 +63,20 @@ class DevelopmentController(BaseController):
         """
         self.__get_issue_list()
         self.__get_issue_details(issue_id)
-        return self.__render()
+        return self._render()
 
-    def put(self, issue_id):
+    @route('/development/<issue_id:int>/', method='POST')
+    def post_id(self, issue_id):
         """
         add comment to issue
         :param issue_id: 
         :return: 
         """
-        self.__get_issue_list()
-        self.__get_issue_details(issue_id)
-
-        if request.forms.get('form') == "reply_issue":
-            content = self.content % (
-                request.forms.get('reply_name'),
-                request.forms.get('reply_content'))
-            self.repo.issue.comment.create(
-                issue_id,
-                content=content
-            )
+        # Todo: Verify form data
+        if request.forms.get('form') == "new_issue":
+            self.__new_issue()
+        elif request.forms.get('form') == "reply_issue":
+            self.__comment(issue_id)
         else:
             self.messages.append(
                 {
@@ -101,6 +85,33 @@ class DevelopmentController(BaseController):
                     'content': '<strong>Error:</strong> Invalid form data'
                 }
             )
+
+        self.__get_issue_list()
+        self.__get_issue_details(issue_id)
+        return self._render()
+
+    def __comment(self, issue_id):
+        content = self.content % (
+            request.forms.get('reply_name'),
+            request.forms.get('reply_content'))
+        self.repo.issue.comment.create(
+            issue_id,
+            content=content
+        )
+
+    def __new_issue(self):
+        content = self.content % (
+            request.forms.get('issue_name'),
+            request.forms.get('issue_content')
+        )
+        self.repo.issue.create(
+            title=request.forms.get('issue_subject'),
+            content=content,
+            component=request.forms.get('issue_component'),
+            status='new',
+            kind=request.forms.get('issue_kind'),
+            priority=request.forms.get('issue_priority')
+        )
 
     def __get_issue_list(self):
         """

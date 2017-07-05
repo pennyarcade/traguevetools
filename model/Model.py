@@ -13,7 +13,18 @@ else:
     db = peewee.SqliteDatabase('sdc/sqlite-latest.sqlite')
 
 
-class InvType(peewee.Model):
+class BaseModel(peewee.Model):
+    def toDict(self):
+        r = {}
+        for k in self._data.keys():
+            try:
+                r[k] = str(getattr(self, k))
+            except:
+                r[k] = json.dumps(getattr(self, k))
+        return str(r)
+
+
+class InvType(BaseModel):
     """
         +---------------+---------------+------+-----+---------+-------+
         | Field         | Type          | Null | Key | Default | Extra |
@@ -59,6 +70,53 @@ class InvType(peewee.Model):
     class Meta:
         database = db
         db_table = 'invTypes'
+
+
+class WalletTransactions(BaseModel):
+    """
+        +------------------+---------------+------+-----+---------+-------+
+        | Field            | Type          | Null | Key | Default | Extra |
+        +------------------+---------------+------+-----+---------+-------+
+        | amount           | decimal(19,2) | YES  |     | NULL    |       |
+        | argumentName     | varchar(255)  | YES  |     | NULL    |       |
+        | argumentValue    | int(11)       | YES  |     | NULL    |       |
+        | balance          | decimal(19,2) | YES  |     | NULL    |       |
+        | date             | date          | YES  |     | NULL    |       |
+        | firstPartyID     | int(11)       | YES  |     | NULL    |       |
+        | firstPartyType   | varchar(20)   | YES  |     | NULL    |       |
+        | reason           | text          | YES  |     | NULL    |       |
+        | refID            | int(11)       | NO   | PRI | NULL    |       |
+        | refTypeID        | int(11)       | YES  | MUL | NULL    |       |
+        | secondPartyID    | int(11)       | YES  |     | NULL    |       |
+        | secondPartyType  | varchar(20)   | YES  |     | NULL    |       |
+        | taxAmount        | decimal(19,2) | YES  |     | NULL    |       |
+        | taxRecieverID    | int(11)       | YES  |     | NULL    |       |
+        +------------------+---------------+------+-----+---------+-------+
+    """
+    amount = peewee.DecimalField(max_digits=19, decimal_places=4, db_column='amount', null=True)
+    argumentName = peewee.CharField(max_length=255, db_column='argument_name', null=True)
+    argumentValue = peewee.IntegerField(db_column='argument_value', null=True)
+    balance = peewee.DecimalField(max_digits=19, decimal_places=4, db_column='balance', null=True)
+    date = peewee.DateTimeField(db_column='date')
+    firstPartyID = peewee.IntegerField(db_column='first_party_id', null=True)
+    firstPartyType = peewee.CharField(max_length=20, db_column='first_party_type', null=True)
+    reason = peewee.TextField(db_column='reason', null=True)
+    refID = peewee.PrimaryKeyField(db_column='refId')
+    refTypeID = peewee.IntegerField(db_column='refTypeId')
+    secondPartyID = peewee.IntegerField(db_column='second_party_id', null=True)
+    secondPartyType = peewee.CharField(max_length=20, db_column='second_party_type', null=True)
+    taxAmount = peewee.DecimalField(max_digits=19, decimal_places=4, db_column='taxAmount', null=True)
+    taxRecieverID = peewee.IntegerField(db_column='tax_reciever_id', null=True)
+
+    sorted_field_names = [
+        'refID', 'refTypeID', 'amount', 'balance', 'reason', 'date',
+        'argumentName', 'argumentValue', 'firstPartyID', 'firstPartyType',
+        'secondPartyID', 'secondPartyType', 'taxAmount', 'taxRecieverID'
+    ]
+
+    class Meta:
+        database = db
+        db_table = 'walletTransactions'
 
 
 def get_model_from_dictionary(model, field_dict):

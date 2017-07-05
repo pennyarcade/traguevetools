@@ -27,8 +27,8 @@
                         <ul class="nav side-menu">
                             <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                  <li><a href="/">Contract parser</a></li>
-                                  <li><a href="/development">Development</a></li>
+                                  <li><a href="/contract/">Contract parser</a></li>
+                                  <li><a href="/development/">Development</a></li>
                                   <!--li><a href="index2.html">Dashboard2</a></li-->
                                 </ul>
                             </li>

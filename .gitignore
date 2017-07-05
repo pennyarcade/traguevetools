@@ -128,3 +128,4 @@ sdc/sqlite-latest.sqlite
 
 # ssl certificate for testing purposes
 /server.pem
+/logs/
