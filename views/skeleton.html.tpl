@@ -44,7 +44,7 @@
                 % if page['output'] and len(page['output']):
                     <div class="row">
                         <pre>
-                            {{!page['output']}}
+{{!page['output']}}
                         </pre>
                     </div>
                 % end

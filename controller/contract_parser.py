@@ -18,7 +18,25 @@ class ContractController(BaseController):
     template = 'contractparser.html.tpl'
     title = 'Contract Parser'
     sub_title = 'for corporation buyback'
-    js = '/static/js/contractparser.js'
+    js = [
+        "/static/node_modules/gentelella/vendors/nprogress/nprogress.js",
+        "/static/node_modules/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-buttons/js/buttons.flash.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-buttons/js/buttons.html5.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-buttons/js/buttons.print.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js",
+        "/static/node_modules/gentelella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js",
+        "/static/node_modules/gentelella/vendors/jszip/dist/jszip.min.js",
+        "/static/node_modules/gentelella/vendors/pdfmake/build/pdfmake.min.js",
+        "/static/node_modules/gentelella/vendors/pdfmake/build/vfs_fonts.js",
+        '/static/js/contractparser.js'
+    ]
 
     def post(self):
         """

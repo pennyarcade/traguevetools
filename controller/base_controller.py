@@ -41,7 +41,7 @@ class BaseController(BottleView):
         just render the page without any inputs
         :return: 
         """
-        return self.__render()
+        return self._render()
 
     def _render(self):
         """
