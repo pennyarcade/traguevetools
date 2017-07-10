@@ -13,12 +13,13 @@ import requests
 from requests.sessions import Session
 from pprint import pprint, pformat
 
+import local_settings
 import common_settings
 from model import Model
 
 
 logging.basicConfig(
-    filename='logs/getTreasurerWallet.log',
+    filename='../../logs/getTreasurerWallet.log',
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
 )
@@ -26,16 +27,16 @@ Model.db.connect()
 
 logger = logging.getLogger('peewee')
 logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.FileHandler('logs/peewee.log'))
+logger.addHandler(logging.FileHandler('../../logs/peewee.log'))
 
 # Constant definitions
 refresh_url = 'https://login.eveonline.com/oauth/token'
 headers = {
     # always keep ur secret data in a separate config file that is ignored in your vcs
     'Authorization': 'Basic ' + base64.b64encode(
-        common_settings.client_id + ':' + common_settings.client_secret
+        local_settings.eve_oauth_client_id + ':' + local_settings.eve_oauth_secret_key
     ),
-    'User-Agent': common_settings.client_name
+    'User-Agent': local_settings.eve_oauth_client_name
 }
 query = {
     'grant_type': 'refresh_token',
@@ -51,11 +52,12 @@ def run():
     """
 
     session = Session()
-    session.headers.update({'UserAgent': common_settings.client_name})
+    session.headers.update({'UserAgent': local_settings.eve_oauth_client_name})
 
     # Get authorization (refresh token)
     r = requests.post('https://login.eveonline.com/oauth/token', params=query, headers=headers)
     response = r.json()
+    print(r.text)
     access_token = response['access_token']
     logging.warn("Access Token {}".format(access_token))
     session.headers.update({'Authorization': 'Bearer ' + access_token})
