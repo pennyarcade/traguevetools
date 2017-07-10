@@ -22,4 +22,4 @@ class SSLify(object):
                 url = request.url.replace('http://', 'https://', 1)
                 code = 301 if self.permanent else 302
 
-            redirect(url, code=code)
+                redirect(url, code=code)
