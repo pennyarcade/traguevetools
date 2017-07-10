@@ -8,7 +8,7 @@ import local_settings
 from model import Model
 
 
-def login(request= None, response=None):
+def login(request= None, response=None, session=None):
     """
     
     :param request: 

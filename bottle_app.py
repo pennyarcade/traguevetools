@@ -5,8 +5,12 @@
 from bottle import *
 from plugin.bottle_sslify import SSLify
 from plugin.bottle_ssl import SSLWSGIRefServer
+from requests_oauthlib import OAuth2Session
 import plugin.canister as canister
+from plugin.canister import session
+
 import logging
+import os
 
 from controller.contract_parser import ContractController
 from controller.development import DevelopmentController
@@ -40,11 +44,15 @@ DonationsController.register(application)
 logging.basicConfig(
         filename='logs/requests.log',
         level=logging.INFO,
-        format='%(asctime)s %(levelname)s %(message)s'
+        format="[%(asctime)s] %(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s",
+        datefmt="%H:%M:%S"
     )
 logger = logging.getLogger('peewee')
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.FileHandler('logs/peewee.log'))
+logger = logging.getLogger('oauthlib')
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.FileHandler('logs/oauth.log'))
 
 
 """
@@ -72,9 +80,44 @@ def index():
 
 
 @route('/login/')
+def sso_login():
+    esi = OAuth2Session(
+        local_settings.eve_oauth_client_id,
+        auto_refresh_url=local_settings.eve_oauth_token_exchange,
+        auto_refresh_kwargs={
+
+        },
+        redirect_uri=local_settings.eve_oauth_callback,
+        scope=local_settings.eve_oauth_scopes,
+        token_updater=token_updater
+    )
+    authorization_url, state = esi.authorization_url(
+        local_settings.eve_oauth_login
+    )
+
+    # State is used to prevent CSRF, keep this for later.
+    session.data['oauth_state'] = state
+    return redirect(authorization_url)
+
+
 @route('/authcallback/')
-def login():
-    return login(request=request, response=response)
+def authenticate():
+    esi = OAuth2Session(
+        local_settings.eve_oauth_client_id,
+        redirect_uri=local_settings.eve_oauth_callback,
+        scope=local_settings.eve_oauth_scopes
+    )
+    token = esi.fetch_token(
+        local_settings.eve_oauth_token_exchange,
+        client_secret=local_settings.eve_oauth_secret_key,
+        authorization_response=request.url
+    )
+
+    session.data['oauth_token'] = token
+
+
+def token_updater(token):
+    session.data['oauth_token'] = token
 
 
 if local_settings.environment != "prod":
@@ -91,6 +134,7 @@ if local_settings.environment != "prod":
 
 
 if __name__ == "__main__":
+    os.environ['DEBUG'] = '1'
     srv = SSLWSGIRefServer(host="127.0.0.1", port=8090)
     run(server=srv)
 else:

@@ -27,7 +27,7 @@
                           </li>
                         % else:
                           <li class="">
-                            <a href="" class="user-profile">
+                            <a href="/login/" class="user-profile">
                               <i class="fa fa-key"></i> <strong>Login</strong>
                             </a>
                           </li>

@@ -3,6 +3,7 @@
     import local_settings
     from controller.common import *
 
+    page['settings'] = local_settings
     rebase('skeleton.html.tpl', page=page)
 %>
 

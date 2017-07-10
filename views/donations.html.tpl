@@ -1,6 +1,12 @@
 <%
+    from pprint import pformat
+    import local_settings
+    from controller.common import *
+
+    page['settings'] = local_settings
     rebase('skeleton.html.tpl', page=page)
 %>
+
 
 <div class="col-md-9 col-sm-9 col-xs-12">
     <div class="x_panel fixed_height_390">
