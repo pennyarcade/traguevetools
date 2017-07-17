@@ -119,6 +119,50 @@ class WalletTransactions(BaseModel):
         db_table = 'walletTransactions'
 
 
+class EsiUser(BaseModel):
+    """
+
+    """
+    charID = peewee.PrimaryKeyField(db_column='character_id')
+    charOwnerHash = peewee.CharField(max_length=255, db_column='char_owner_hash')
+    charName = peewee.CharField(max_length=200, db_column='char_name')
+    accessToken = peewee.CharField(max_length=100, db_column='access_token')
+    accessTokenExpires = peewee.DateTimeField(db_column='access_token_expired')
+    refreshToken = peewee.CharField(max_length=100, db_column='refresh_token')
+    sorted_field_names = [
+        'charID', 'charOwnerHash', 'charName',
+        'accessToken', 'accessTokenExpires', 'refreshToken'
+    ]
+
+    def get_id(self):
+        """ Required for flask-login """
+        return self.character_id
+
+    def get_sso_data(self):
+        """ Little "helper" function to get formated data for esipy security
+        """
+        return {
+            'access_token': self.access_token,
+            'refresh_token': self.refresh_token,
+            'expires_in': (
+                self.access_token_expires - datetime.utcnow()
+            ).total_seconds()
+        }
+
+    def update_token(self, token_response):
+        """ helper function to update token data from SSO response """
+        self.access_token = token_response['access_token']
+        self.access_token_expires = datetime.fromtimestamp(
+            time.time() + token_response['expires_in'],
+        )
+        if 'refresh_token' in token_response:
+            self.refresh_token = token_response['refresh_token']
+
+    class Meta:
+        database = db
+        db_table = 'esiUser'
+
+
 def get_model_from_dictionary(model, field_dict):
     if isinstance(model, peewee.Model):
         model_instance = model

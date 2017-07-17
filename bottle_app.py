@@ -2,12 +2,17 @@
     @TODO: Application Apidoc
 """
 
-from bottle import *
+from bottle import request
 from plugin.bottle_sslify import SSLify
 from plugin.bottle_ssl import SSLWSGIRefServer
-from requests_oauthlib import OAuth2Session
 import plugin.canister as canister
 from plugin.canister import session
+
+from esipy import App
+from esipy import EsiClient
+from esipy import EsiSecurity
+from esipy.exceptions import APIException
+from esipy.cache import FileCache
 
 import logging
 import os
@@ -58,6 +63,8 @@ logger.addHandler(logging.FileHandler('logs/oauth.log'))
 """
     hooks for database integration
 """
+
+
 @hook('before_request')
 def _connect_db():
     Model.db.connect()
@@ -79,45 +86,108 @@ def index():
     redirect('/contract/')
 
 
+def token_updater(token):
+    session.data['oauth_token'] = token
+
+
+# -----------------------------------------------------------------------
+# ESIPY Init
+# -----------------------------------------------------------------------
+# create the app
+esiapp = App.create(
+    local_settings.eve_oauth_swagger_json
+)
+
+esicache = FileCache(
+    path=localsettings.eve_oauth_cache_dir
+)
+
+# init the security object
+esisecurity = EsiSecurity(
+    app=esiapp,
+    redirect_uri=local_settings.eve_oauth_callback,
+    client_id=local_settings.eve_oauth_client_id,
+    secret_key=local_settings.eve_oauth_secret_key,
+)
+
+# init the client
+esiclient = EsiClient(
+    security=esisecurity,
+    retry_requests=True,
+    cache=esicache,
+    headers={
+        'User-Agent': local_settings.eve_oauth_client_name
+    }
+)
+
+# -----------------------------------------------------------------------
+# Login / Logout Routes
+# -----------------------------------------------------------------------
 @route('/login/')
-def sso_login():
-    esi = OAuth2Session(
-        local_settings.eve_oauth_client_id,
-        auto_refresh_url=local_settings.eve_oauth_token_exchange,
-        auto_refresh_kwargs={
+def login():
+    """ this redirects the user to the EVE SSO login """
+    return redirect(esisecurity.get_auth_uri(
+        scopes=local_settings.eve_oauth_scopes
+    ))
 
-        },
-        redirect_uri=local_settings.eve_oauth_callback,
-        scope=local_settings.eve_oauth_scopes,
-        token_updater=token_updater
-    )
-    authorization_url, state = esi.authorization_url(
-        local_settings.eve_oauth_login
-    )
 
-    # State is used to prevent CSRF, keep this for later.
-    session.data['oauth_state'] = state
-    return redirect(authorization_url)
+@app.route('/logout/')
+@login_required
+def logout():
+    # Todo: Implement logout
+    return redirect('/')
 
 
 @route('/authcallback/')
-def authenticate():
-    esi = OAuth2Session(
-        local_settings.eve_oauth_client_id,
-        redirect_uri=local_settings.eve_oauth_callback,
-        scope=local_settings.eve_oauth_scopes
-    )
-    token = esi.fetch_token(
-        local_settings.eve_oauth_token_exchange,
-        client_secret=local_settings.eve_oauth_secret_key,
-        authorization_response=request.url
-    )
+def callback():
+    """ This is where the user comes after he logged in SSO """
+    # get the code from the login process
+    code = request.args.get('code')
 
-    session.data['oauth_token'] = token
+    # now we try to get tokens
+    try:
+        auth_response = esisecurity.auth(code)
+    except APIException as e:
+        return 'Login EVE Online SSO failed: %s' % e, 403
 
+    # we get the character informations
+    cdata = esisecurity.verify()
 
-def token_updater(token):
-    session.data['oauth_token'] = token
+    # if the user is already authed, we log him out
+    if current_user.is_authenticated:
+        # Todo: Implement logout
+        pass
+
+    # now we check in database, if the user exists
+    # actually we'd have to also check with character_owner_hash, to be
+    # sure the owner is still the same, but that's an example only...
+    try:
+        user = User.query.filter(
+            User.character_id == cdata['CharacterID'],
+        ).one()
+
+    except NoResultFound:
+        user = User()
+        user.character_id = cdata['CharacterID']
+
+    user.character_owner_hash = cdata['CharacterOwnerHash']
+    user.character_name = cdata['CharacterName']
+    user.update_token(auth_response)
+
+    # now the user is ready, so update/create it and log the user
+    try:
+        db.session.merge(user)
+        db.session.commit()
+
+        login_user(user)
+        session.permanent = True
+
+    except:
+        logger.exception("Cannot login the user - uid: %d" % user.character_id)
+        db.session.rollback()
+        logout_user()
+
+    return redirect('/')
 
 
 if local_settings.environment != "prod":

@@ -10,5 +10,6 @@ Model.db.connect()
 print('Connected, creating tables...')
 Model.db.create_table(Model.InvType, safe=True)
 Model.db.create_table(Model.WalletTransactions, safe=True)
+Model.db.create_table(Model.EsiUser, safe=True)
 
 print('Done...')
