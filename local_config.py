@@ -5,7 +5,7 @@ import datetime
 # Application configurations
 # ------------------------------------------------------
 DEBUG = True
-SECRET_KEY = 'YouNeedToChangeThisToBeSecure!'
+SECRET_KEY = 'CredulityIsNotAVirtue!'
 PORT = 5015
 HOST = 'localhost'
 
@@ -19,10 +19,10 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///app.db'
 # -----------------------------------------------------
 ESI_DATASOURCE = 'tranquility'  # Change it to 'singularity' to use the test server
 ESI_SWAGGER_JSON = 'https://esi.tech.ccp.is/latest/swagger.json?datasource=%s' % ESI_DATASOURCE
-ESI_SECRET_KEY = ''  # your secret key
-ESI_CLIENT_ID = ''  # your client ID
-ESI_CALLBACK = 'http://%s:%d/sso/callback' % (HOST, PORT)  # the callback URI you gave CCP
-ESI_USER_AGENT = 'esipy-flask-example'
+ESI_SECRET_KEY = 'b0c0669249f44014a0b83dc9e578d4f7'  # your secret key
+ESI_CLIENT_ID = '4QHREgHrWG5m2NegFB2wtZgVzxHxWrkewvOWEkpo'  # your client ID
+ESI_CALLBACK = 'http://%s:%d/authcallback' % (HOST, PORT)  # the callback URI you gave CCP
+ESI_USER_AGENT = 'Eve Tools Test'
 
 
 # ------------------------------------------------------

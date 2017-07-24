@@ -79,7 +79,7 @@ celerybeat-schedule
 .env
 
 # virtualenv
-venv/
+eveenv/
 ENV/
 
 # Spyder project settings
@@ -91,3 +91,6 @@ ENV/
 app\.db
 
 config\.py
+
+#project settings
+.idea
