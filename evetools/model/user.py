@@ -1,30 +1,29 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 import time
 from datetime import datetime
 
 # Import the database object (db) from the main application module
 # We will define this inside /app/__init__.py in the next sections.
-from evetools import db
+from evetools import evedb
 
 
 # -----------------------------------------------------------------------
 # Database models
 # -----------------------------------------------------------------------
-class User(db.Model, UserMixin):
+class User(evedb.Model, UserMixin):
     # our ID is the character ID from EVE API
-    character_id = db.Column(
-        db.BigInteger,
+    character_id = evedb.Column(
+        evedb.BigInteger,
         primary_key=True,
         autoincrement=False
     )
-    character_owner_hash = db.Column(db.String(255))
-    character_name = db.Column(db.String(200))
+    character_owner_hash = evedb.Column(evedb.String(255))
+    character_name = evedb.Column(evedb.String(200))
 
     # SSO Token stuff
-    access_token = db.Column(db.String(100))
-    access_token_expires = db.Column(db.DateTime())
-    refresh_token = db.Column(db.String(100))
+    access_token = evedb.Column(evedb.String(100))
+    access_token_expires = evedb.Column(evedb.DateTime())
+    refresh_token = evedb.Column(evedb.String(100))
 
     def get_id(self):
         """ Required for flask-login """

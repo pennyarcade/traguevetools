@@ -12,9 +12,10 @@ from flask_login import logout_user
 from esipy.exceptions import APIException
 from sqlalchemy.orm.exc import NoResultFound
 
-from evetools import db, logger
 from evetools.api.esi import esisecurity
 from evetools.model.user import User
+from evetools import evelogger
+from evetools import evedb
 
 
 login = Blueprint('login', __name__, template_folder='templates')
@@ -24,7 +25,7 @@ login = Blueprint('login', __name__, template_folder='templates')
 # Login / Logout Routes
 # -----------------------------------------------------------------------
 @login.route('/login')
-def login():
+def sso_redirect():
     """ this redirects the user to the EVE SSO login """
     return redirect(esisecurity.get_auth_uri(
         scopes=['esi-wallet.read_character_wallet.v1']
@@ -76,15 +77,16 @@ def callback():
 
     # now the user is ready, so update/create it and log the user
     try:
-        db.session.merge(user)
-        db.session.commit()
+        evedb.session.merge(user)
+        evedb.session.commit()
 
         login_user(user)
         session.permanent = True
 
-    except:
-        logger.exception("Cannot login the user - uid: %d" % user.character_id)
-        db.session.rollback()
+    except Exception as e:
+        evelogger.exception("Cannot login the user - uid: %d", user.character_id)
+        evelogger.exception("Exception thrown: %s", e)
+        evedb.session.rollback()
         logout_user()
 
     return redirect(url_for("index"))
