@@ -39,8 +39,8 @@ def logout():
     return redirect(url_for("index"))
 
 
-@login.route('/sso/callback')
-@login.route('/sso/callback/')
+@login.route('/callback')
+@login.route('/callback/')
 def callback():
     """ This is where the user comes after he logged in SSO """
     # get the code from the login process
